@@ -14,3 +14,465 @@
 2025-11-19 19:00:51,577 - server - INFO - Shutting down application
 2025-11-19 19:00:53,872 - server - INFO - Starting application
 2025-11-19 19:03:25,610 - server - INFO - Shutting down application
+2025-11-19 19:07:47,447 - server - INFO - Starting application
+2025-11-19 19:08:20,373 - server - INFO - Shutting down application
+2025-11-19 19:08:23,377 - server - INFO - Starting application
+2025-11-19 19:19:12,379 - server - INFO - Shutting down application
+2025-11-19 19:19:15,152 - server - INFO - Starting application
+2025-11-19 19:45:43,921 - server - INFO - Shutting down application
+2025-11-19 19:45:46,502 - server - ERROR - Failed to load business router app.api.routes.business_country: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_country.py", line 5, in <module>
+    from app.services.business_country_service import businessCountryService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_country_service.py", line 5, in <module>
+    from app.infrastructure.db.business_country_repository import businessCountryRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_country_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import CountryORM
+ImportError: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:46,528 - server - ERROR - Failed to load business router app.api.routes.business_employee: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_employee.py", line 5, in <module>
+    from app.services.business_employee_service import businessEmployeeService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_employee_service.py", line 5, in <module>
+    from app.infrastructure.db.business_employee_repository import businessEmployeeRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_employee_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EmployeeORM
+ImportError: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:46,554 - server - ERROR - Failed to load business router app.api.routes.business_equipment: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_equipment.py", line 5, in <module>
+    from app.services.business_equipment_service import businessEquipmentService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_equipment_service.py", line 5, in <module>
+    from app.infrastructure.db.business_equipment_repository import businessEquipmentRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_equipment_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EquipmentORM
+ImportError: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:46,560 - server - INFO - Starting application
+2025-11-19 19:45:57,956 - server - ERROR - Failed to load business router app.api.routes.business_country: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_country.py", line 5, in <module>
+    from app.services.business_country_service import businessCountryService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_country_service.py", line 5, in <module>
+    from app.infrastructure.db.business_country_repository import businessCountryRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_country_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import CountryORM
+ImportError: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:57,963 - server - ERROR - Failed to load business router app.api.routes.business_employee: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_employee.py", line 5, in <module>
+    from app.services.business_employee_service import businessEmployeeService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_employee_service.py", line 5, in <module>
+    from app.infrastructure.db.business_employee_repository import businessEmployeeRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_employee_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EmployeeORM
+ImportError: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:57,969 - server - ERROR - Failed to load business router app.api.routes.business_equipment: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_equipment.py", line 5, in <module>
+    from app.services.business_equipment_service import businessEquipmentService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_equipment_service.py", line 5, in <module>
+    from app.infrastructure.db.business_equipment_repository import businessEquipmentRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_equipment_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EquipmentORM
+ImportError: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:58,012 - server - ERROR - Failed to load business router app.api.routes.business_country: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_country.py", line 5, in <module>
+    from app.services.business_country_service import businessCountryService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_country_service.py", line 5, in <module>
+    from app.infrastructure.db.business_country_repository import businessCountryRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_country_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import CountryORM
+ImportError: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:58,016 - server - ERROR - Failed to load business router app.api.routes.business_employee: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_employee.py", line 5, in <module>
+    from app.services.business_employee_service import businessEmployeeService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_employee_service.py", line 5, in <module>
+    from app.infrastructure.db.business_employee_repository import businessEmployeeRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_employee_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EmployeeORM
+ImportError: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:45:58,021 - server - ERROR - Failed to load business router app.api.routes.business_equipment: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_equipment.py", line 5, in <module>
+    from app.services.business_equipment_service import businessEquipmentService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_equipment_service.py", line 5, in <module>
+    from app.infrastructure.db.business_equipment_repository import businessEquipmentRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_equipment_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EquipmentORM
+ImportError: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:46:08,570 - server - ERROR - Failed to load business router app.api.routes.business_country: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_country.py", line 5, in <module>
+    from app.services.business_country_service import businessCountryService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_country_service.py", line 5, in <module>
+    from app.infrastructure.db.business_country_repository import businessCountryRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_country_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import CountryORM
+ImportError: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:46:08,576 - server - ERROR - Failed to load business router app.api.routes.business_employee: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_employee.py", line 5, in <module>
+    from app.services.business_employee_service import businessEmployeeService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_employee_service.py", line 5, in <module>
+    from app.infrastructure.db.business_employee_repository import businessEmployeeRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_employee_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EmployeeORM
+ImportError: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:46:08,581 - server - ERROR - Failed to load business router app.api.routes.business_equipment: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_equipment.py", line 5, in <module>
+    from app.services.business_equipment_service import businessEquipmentService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_equipment_service.py", line 5, in <module>
+    from app.infrastructure.db.business_equipment_repository import businessEquipmentRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_equipment_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EquipmentORM
+ImportError: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:46:14,809 - server - ERROR - Failed to load business router app.api.routes.business_country: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_country.py", line 5, in <module>
+    from app.services.business_country_service import businessCountryService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_country_service.py", line 5, in <module>
+    from app.infrastructure.db.business_country_repository import businessCountryRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_country_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import CountryORM
+ImportError: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:46:14,814 - server - ERROR - Failed to load business router app.api.routes.business_employee: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_employee.py", line 5, in <module>
+    from app.services.business_employee_service import businessEmployeeService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_employee_service.py", line 5, in <module>
+    from app.infrastructure.db.business_employee_repository import businessEmployeeRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_employee_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EmployeeORM
+ImportError: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:46:14,817 - server - ERROR - Failed to load business router app.api.routes.business_equipment: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_equipment.py", line 5, in <module>
+    from app.services.business_equipment_service import businessEquipmentService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_equipment_service.py", line 5, in <module>
+    from app.infrastructure.db.business_equipment_repository import businessEquipmentRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_equipment_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EquipmentORM
+ImportError: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:51:01,413 - server - ERROR - Failed to load business router app.api.routes.business_country: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_country.py", line 5, in <module>
+    from app.services.business_country_service import businessCountryService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_country_service.py", line 5, in <module>
+    from app.infrastructure.db.business_country_repository import businessCountryRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_country_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import CountryORM
+ImportError: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:51:01,420 - server - ERROR - Failed to load business router app.api.routes.business_employee: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_employee.py", line 5, in <module>
+    from app.services.business_employee_service import businessEmployeeService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_employee_service.py", line 5, in <module>
+    from app.infrastructure.db.business_employee_repository import businessEmployeeRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_employee_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EmployeeORM
+ImportError: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:51:01,428 - server - ERROR - Failed to load business router app.api.routes.business_equipment: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_equipment.py", line 5, in <module>
+    from app.services.business_equipment_service import businessEquipmentService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_equipment_service.py", line 5, in <module>
+    from app.infrastructure.db.business_equipment_repository import businessEquipmentRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_equipment_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EquipmentORM
+ImportError: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:51:01,432 - server - INFO - Starting application
+2025-11-19 19:51:40,543 - server - INFO - Shutting down application
+2025-11-19 19:52:53,790 - server - ERROR - Failed to load business router app.api.routes.business_country: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_country.py", line 5, in <module>
+    from app.services.business_country_service import businessCountryService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_country_service.py", line 5, in <module>
+    from app.infrastructure.db.business_country_repository import businessCountryRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_country_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import CountryORM
+ImportError: cannot import name 'CountryORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:52:53,796 - server - ERROR - Failed to load business router app.api.routes.business_employee: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_employee.py", line 5, in <module>
+    from app.services.business_employee_service import businessEmployeeService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_employee_service.py", line 5, in <module>
+    from app.infrastructure.db.business_employee_repository import businessEmployeeRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_employee_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EmployeeORM
+ImportError: cannot import name 'EmployeeORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:52:53,802 - server - ERROR - Failed to load business router app.api.routes.business_equipment: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+Traceback (most recent call last):
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\main.py", line 44, in load_business_routes
+    module = importlib.import_module(module_name)
+  File "C:\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\api\routes\business_equipment.py", line 5, in <module>
+    from app.services.business_equipment_service import businessEquipmentService
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\services\business_equipment_service.py", line 5, in <module>
+    from app.infrastructure.db.business_equipment_repository import businessEquipmentRepository
+  File "C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\business_equipment_repository.py", line 6, in <module>
+    from app.infrastructure.db.repositories import EquipmentORM
+ImportError: cannot import name 'EquipmentORM' from 'app.infrastructure.db.repositories' (C:\Users\aaouf\OneDrive - Studiecentrum voor Kernenergie\Desktop\workspace\autocode\template\app\infrastructure\db\repositories.py)
+2025-11-19 19:52:53,808 - server - INFO - Starting application
+2025-11-19 19:54:50,332 - server - INFO - Shutting down application
+2025-11-19 20:20:42,355 - server - INFO - Loaded business router from app.api.routes.business_country
+2025-11-19 20:20:42,366 - server - INFO - Loaded business router from app.api.routes.business_employee
+2025-11-19 20:20:42,377 - server - INFO - Loaded business router from app.api.routes.business_equipment
+2025-11-19 20:20:42,379 - server - INFO - Starting application
+2025-11-19 20:24:30,374 - server - INFO - Loaded business router from app.api.routes.business_country
+2025-11-19 20:24:30,407 - server - INFO - Loaded business router from app.api.routes.business_employee
+2025-11-19 20:24:30,441 - server - INFO - Loaded business router from app.api.routes.business_equipment
+2025-11-19 20:24:30,444 - server - INFO - Starting application
+2025-11-19 20:25:00,595 - server - INFO - Loaded business router from app.api.routes.business_country
+2025-11-19 20:25:00,606 - server - INFO - Loaded business router from app.api.routes.business_employee
+2025-11-19 20:25:00,619 - server - INFO - Loaded business router from app.api.routes.business_equipment
+2025-11-19 20:25:00,623 - server - INFO - Starting application
+2025-11-19 20:25:09,806 - server - INFO - Loaded business router from app.api.routes.business_country
+2025-11-19 20:25:09,861 - server - INFO - Loaded business router from app.api.routes.business_employee
+2025-11-19 20:25:09,913 - server - INFO - Loaded business router from app.api.routes.business_equipment
+2025-11-19 20:25:09,916 - server - INFO - Starting application
+2025-11-19 20:29:21,760 - server - INFO - Loaded business router from app.api.routes.business_country
+2025-11-19 20:29:21,792 - server - INFO - Loaded business router from app.api.routes.business_employee
+2025-11-19 20:29:21,831 - server - INFO - Loaded business router from app.api.routes.business_equipment
+2025-11-19 20:29:21,833 - server - INFO - Starting application
+2025-11-19 20:30:45,204 - server - INFO - Shutting down application
+2025-11-19 20:31:19,451 - server - INFO - Loaded custom router from app.api.routes.custom_country
+2025-11-19 20:31:19,481 - server - INFO - Loaded custom router from app.api.routes.custom_employee
+2025-11-19 20:31:19,516 - server - INFO - Loaded custom router from app.api.routes.custom_equipment
+2025-11-19 20:31:19,519 - server - INFO - Starting application
+2025-11-19 20:50:00,574 - server - INFO - Shutting down application
+2025-11-19 20:50:02,849 - server - INFO - PID:23772 - Loaded custom router from app.api.routes.custom_country
+2025-11-19 20:50:02,860 - server - INFO - PID:23772 - Loaded custom router from app.api.routes.custom_employee
+2025-11-19 20:50:02,869 - server - INFO - PID:23772 - Loaded custom router from app.api.routes.custom_equipment
+2025-11-19 20:50:02,871 - server - INFO - PID:23772 - Starting application
+2025-11-19 21:27:26,695 - server - INFO - PID:23772 - Shutting down application
