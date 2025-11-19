@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    env_file:
+      - ../.env.example
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://postgres:postgres@db:5432/cleanauth}
+      CACHE_URL: ${CACHE_URL:-redis://cache:6379/0}
+    depends_on:
+      - db
+      - cache
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../app:/app/app
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: cleanauth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  cache:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    command: ["--logtostderr"]
+    ports:
+      - "6379:6379"
+volumes:
+  postgres-data:
