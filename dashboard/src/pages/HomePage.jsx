@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { IoHomeOutline } from 'react-icons/io5'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { API_BASE_URL, PING_ENDPOINT, SCHEMA_ENDPOINT } from '../config/api'
 import { useAuth } from '../context/AuthContext'
@@ -160,6 +161,10 @@ const HomePage = () => {
     }, {})
   }, [tables])
 
+  const sidebarTables = useMemo(() => {
+    return tables.filter((table) => table.slug !== 'activity_logs')
+  }, [tables])
+
   const outletContextValue = useMemo(
     () => ({
       tables,
@@ -173,51 +178,75 @@ const HomePage = () => {
   )
 
   return (
-    <div className="dashboard-shell">
-      <aside className="dashboard-sidebar">
-        <div className="sidebar-header">
-          <p className="sidebar-eyebrow">Administration</p>
-          <h2>Control Center</h2>
+    <>
+      {loading && (
+        <div className="dashboard-toast" role="status" aria-live="polite">
+          <span className="toast-spinner" aria-hidden="true" />
+          <span>Loading...</span>
         </div>
-
-        <div className="sidebar-list">
-          {loading && <p className="sidebar-state">Loading tables...</p>}
-          {!loading && schemaError && <p className="sidebar-error">{schemaError}</p>}
-          {!loading &&
-            !schemaError &&
-            tables.map((table) => (
-              <NavLink
-                key={table.slug}
-                to={`/tables/${table.slug}`}
-                className={({ isActive }) =>
-                  ['sidebar-item', isActive ? 'sidebar-item-active' : ''].filter(Boolean).join(' ')
-                }
-              >
-                <div className="dot" />
-                <div>
-                  <p className="item-title">{table.displayName}</p>
-                  <p className="item-description">{table.description}</p>
-                </div>
-              </NavLink>
-            ))}
-        </div>
-
-        <button type="button" className="sidebar-footer" onClick={handleLogout}>
-          <div className="avatar">{initials}</div>
-          <div>
-            <p className="footer-label">Signed in as</p>
-            <div className="footer-text">
-              <p className="footer-email">{userEmail}</p>
-              <p className="footer-logout">Logout</p>
-            </div>
+      )}
+      <div className="dashboard-shell">
+        <aside className="dashboard-sidebar">
+          <div className="sidebar-header">
+            <p className="sidebar-eyebrow">Administration</p>
+            <h2>Control Center</h2>
           </div>
-        </button>
-      </aside>
 
-      <main className="dashboard-content">
-        <Outlet context={outletContextValue} />
-      </main>
-    </div>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              ['sidebar-home-button', isActive ? 'sidebar-home-button-active' : ''].filter(Boolean).join(' ')
+            }
+          >
+            <span className="sidebar-home-icon">
+              <IoHomeOutline />
+            </span>
+            <div>
+              <p className="footer-label">Overview</p>
+              <p className="sidebar-home-text">Home</p>
+            </div>
+          </NavLink>
+
+          <div className="sidebar-list">
+            {loading && <p className="sidebar-state">Loading tables...</p>}
+            {!loading && schemaError && <p className="sidebar-error">{schemaError}</p>}
+            {!loading &&
+              !schemaError &&
+              sidebarTables.map((table) => (
+                <NavLink
+                  key={table.slug}
+                  to={`/tables/${table.slug}`}
+                  className={({ isActive }) =>
+                    ['sidebar-item', isActive ? 'sidebar-item-active' : ''].filter(Boolean).join(' ')
+                  }
+                >
+                  <div className="dot" />
+                  <div>
+                    <p className="item-title">{table.displayName}</p>
+                    <p className="item-description">{table.description}</p>
+                  </div>
+                </NavLink>
+              ))}
+          </div>
+
+          <button type="button" className="sidebar-footer" onClick={handleLogout}>
+            <div className="avatar">{initials}</div>
+            <div>
+              <p className="footer-label">Signed in as</p>
+              <div className="footer-text">
+                <p className="footer-email">{userEmail}</p>
+                <p className="footer-logout">Logout</p>
+              </div>
+            </div>
+          </button>
+        </aside>
+
+        <main className="dashboard-content">
+          <Outlet context={outletContextValue} />
+        </main>
+      </div>
+    </>
   )
 }
 

@@ -5,7 +5,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 
-from app.api.routes import auth, privileges, roles, system, users
+from app.api.routes import auth, privileges, role_privileges, roles, system, users
 from app.core.config import get_settings
 from app.core.logging import configure_logging
 from app.infrastructure.db.seeds import seed_initial_data
@@ -33,6 +33,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(roles.router)
 app.include_router(privileges.router)
+app.include_router(role_privileges.router)
 app.include_router(system.router)
 
 

@@ -10,6 +10,7 @@ from app.infrastructure.db.repositories import UserORM
 from app.infrastructure.db.session import get_db_session
 from app.services.auth_service import AuthService
 from app.services.privilege_service import PrivilegeService
+from app.services.role_privilege_service import RolePrivilegeService
 from app.services.role_service import RoleService
 from app.services.token_service import TokenBlocklistService
 from app.services.user_service import UserService
@@ -33,6 +34,12 @@ async def get_role_service(
     session: AsyncSession = Depends(get_db_session),
 ) -> RoleService:
     return RoleService(session)
+
+
+async def get_role_privilege_service(
+    session: AsyncSession = Depends(get_db_session),
+) -> RolePrivilegeService:
+    return RolePrivilegeService(session)
 
 
 async def get_token_blocklist() -> TokenBlocklistService:

@@ -64,6 +64,22 @@ class RoleUpdateSchema(BaseModel):
     privileges: Optional[List[PrivilegeCreateSchema]] = None
 
 
+class RolePrivilegeLinkSchema(BaseModel):
+    model_config = {"from_attributes": True}
+
+    role_id: int
+    role_name: str
+    privilege_id: int
+    privilege_resource: str
+    privilege_action: str
+    privilege_description: Optional[str] = None
+
+
+class RolePrivilegeLinkCreateSchema(BaseModel):
+    role_id: int
+    privilege_id: int
+
+
 class UserCreateSchema(BaseModel):
     email: EmailStr
     password: str

@@ -240,6 +240,10 @@ def main() -> None:
     entities = load_entities(config_path)
     for entity in entities:
         generate_entity(entity)
+    print(
+        "Remember to insert matching privileges into the database, e.g.:\n"
+        "INSERT INTO privileges (resource, action, description) VALUES ('your_resource', 'read', '...');"
+    )
 
 
 if __name__ == "__main__":

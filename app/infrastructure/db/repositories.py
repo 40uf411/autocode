@@ -37,6 +37,16 @@ class RoleSummary:
     name: str
     is_superuser: bool
 
+
+@dataclass
+class RolePrivilegeLink:
+    role_id: int
+    privilege_id: int
+    role_name: str
+    privilege_resource: str
+    privilege_action: str
+    privilege_description: Optional[str]
+
 user_roles = Table(
     "user_roles",
     Base.metadata,
@@ -368,6 +378,76 @@ class RoleRepository:
         if result.scalar_one_or_none():
             raise ValueError("A superuser role already exists")
 
+
+class RolePrivilegeRepository:
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def list_links(self, *, offset: int = 0, limit: int = 100) -> List[RolePrivilegeLink]:
+        stmt = (
+            select(
+                role_privileges.c.role_id.label("role_id"),
+                role_privileges.c.privilege_id.label("privilege_id"),
+                RoleORM.name.label("role_name"),
+                PrivilegeORM.resource.label("privilege_resource"),
+                PrivilegeORM.action.label("privilege_action"),
+                PrivilegeORM.description.label("privilege_description"),
+            )
+            .select_from(role_privileges)
+            .join(RoleORM, RoleORM.id == role_privileges.c.role_id)
+            .join(PrivilegeORM, PrivilegeORM.id == role_privileges.c.privilege_id)
+            .order_by(role_privileges.c.role_id, role_privileges.c.privilege_id)
+            .offset(offset)
+            .limit(limit)
+        )
+        result = await self.session.execute(stmt)
+        return [
+            RolePrivilegeLink(
+                role_id=row.role_id,
+                privilege_id=row.privilege_id,
+                role_name=row.role_name,
+                privilege_resource=row.privilege_resource,
+                privilege_action=row.privilege_action,
+                privilege_description=row.privilege_description,
+            )
+            for row in result.all()
+        ]
+
+    async def count_links(self) -> int:
+        stmt = select(func.count()).select_from(role_privileges)
+        result = await self.session.execute(stmt)
+        return result.scalar_one()
+
+    async def get_link(self, role_id: int, privilege_id: int) -> Optional[RolePrivilegeLink]:
+        stmt = (
+            select(
+                role_privileges.c.role_id.label("role_id"),
+                role_privileges.c.privilege_id.label("privilege_id"),
+                RoleORM.name.label("role_name"),
+                PrivilegeORM.resource.label("privilege_resource"),
+                PrivilegeORM.action.label("privilege_action"),
+                PrivilegeORM.description.label("privilege_description"),
+            )
+            .select_from(role_privileges)
+            .join(RoleORM, RoleORM.id == role_privileges.c.role_id)
+            .join(PrivilegeORM, PrivilegeORM.id == role_privileges.c.privilege_id)
+            .where(
+                role_privileges.c.role_id == role_id,
+                role_privileges.c.privilege_id == privilege_id,
+            )
+        )
+        result = await self.session.execute(stmt)
+        row = result.first()
+        if not row:
+            return None
+        return RolePrivilegeLink(
+            role_id=row.role_id,
+            privilege_id=row.privilege_id,
+            role_name=row.role_name,
+            privilege_resource=row.privilege_resource,
+            privilege_action=row.privilege_action,
+            privilege_description=row.privilege_description,
+        )
 
 class UserRepository:
     def __init__(self, session: AsyncSession) -> None:
