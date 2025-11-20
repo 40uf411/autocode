@@ -47,7 +47,7 @@ async def create_role(
 
 
 @router.post(
-    "/{role_id}/privileges",
+    "/{role_id:int}/privileges",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )
@@ -60,7 +60,7 @@ async def grant_privilege_to_role(
 
 
 @router.delete(
-    "/{role_id}/privileges/{privilege_id}",
+    "/{role_id:int}/privileges/{privilege_id:int}",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )
@@ -70,15 +70,6 @@ async def revoke_privilege_from_role(
     role_service: RoleService = Depends(get_role_service),
 ) -> RoleORM:
     return await role_service.revoke_privilege(role_id, privilege_id)
-
-
-@router.get(
-    "/{role_id}",
-    response_model=RoleSchema,
-    dependencies=[Depends(require_privilege("roles", "read"))],
-)
-async def get_role_detail(role_id: int, role_service: RoleService = Depends(get_role_service)) -> RoleORM:
-    return await role_service.get_role_detail(role_id)
 
 
 @router.get(
@@ -92,8 +83,17 @@ async def count_roles(
     return {"count": await role_service.count_roles(include_deleted=include_deleted)}
 
 
+@router.get(
+    "/{role_id:int}",
+    response_model=RoleSchema,
+    dependencies=[Depends(require_privilege("roles", "read"))],
+)
+async def get_role_detail(role_id: int, role_service: RoleService = Depends(get_role_service)) -> RoleORM:
+    return await role_service.get_role_detail(role_id)
+
+
 @router.patch(
-    "/{role_id}",
+    "/{role_id:int}",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )
@@ -114,7 +114,7 @@ async def update_role(
 
 
 @router.delete(
-    "/{role_id}",
+    "/{role_id:int}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_privilege("roles", "delete"))],
 )
@@ -127,7 +127,7 @@ async def delete_role(
 
 
 @router.post(
-    "/{role_id}/restore",
+    "/{role_id:int}/restore",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )

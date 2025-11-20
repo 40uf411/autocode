@@ -79,3 +79,15 @@ def require_privilege(resource: str, action: str) -> Callable[[UserORM, AuthServ
         return current_user
 
     return dependency
+
+
+async def require_superuser(
+    current_user: UserORM = Depends(get_current_user),
+    auth_service: AuthService = Depends(get_auth_service),
+) -> UserORM:
+    if await auth_service.user_repo.user_is_superuser(current_user.id):
+        return current_user
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Superuser privileges required",
+    )

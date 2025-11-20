@@ -51,7 +51,7 @@ async def create_privilege(
 
 
 @router.patch(
-    "/{privilege_id}",
+    "/{privilege_id:int}",
     response_model=PrivilegeSchema,
     dependencies=[Depends(require_privilege("privileges", "update"))],
 )
@@ -69,7 +69,7 @@ async def update_privilege(
 
 
 @router.delete(
-    "/{privilege_id}",
+    "/{privilege_id:int}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_privilege("privileges", "delete"))],
 )
@@ -82,7 +82,7 @@ async def delete_privilege(
 
 
 @router.post(
-    "/{privilege_id}/restore",
+    "/{privilege_id:int}/restore",
     response_model=PrivilegeSchema,
     dependencies=[Depends(require_privilege("privileges", "update"))],
 )

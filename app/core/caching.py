@@ -4,6 +4,7 @@ import time
 from typing import Any, Optional
 
 from redis.asyncio import Redis
+from redis.exceptions import RedisError
 
 from app.core.config import get_settings
 
@@ -67,7 +68,11 @@ class DragonflyCache:
         client = await self._get_client()
         if not client:
             return await self._fallback.get(key)
-        data = await client.get(key)
+        try:
+            data = await client.get(key)
+        except RedisError:
+            self._client = None
+            return await self._fallback.get(key)
         if data is None:
             return None
         return pickle.loads(data)
@@ -78,14 +83,22 @@ class DragonflyCache:
         if not client:
             await self._fallback.set(key, value, ttl_value)
             return
-        await client.set(key, pickle.dumps(value), ex=ttl_value)
+        try:
+            await client.set(key, pickle.dumps(value), ex=ttl_value)
+        except RedisError:
+            self._client = None
+            await self._fallback.set(key, value, ttl_value)
 
     async def delete(self, key: str) -> None:
         client = await self._get_client()
         if not client:
             await self._fallback.delete(key)
             return
-        await client.delete(key)
+        try:
+            await client.delete(key)
+        except RedisError:
+            self._client = None
+            await self._fallback.delete(key)
 
 
 dragonfly_cache = DragonflyCache()

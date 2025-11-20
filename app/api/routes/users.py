@@ -45,7 +45,7 @@ async def create_user(
 
 
 @router.patch(
-    "/{user_id}",
+    "/{user_id:int}",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
@@ -58,7 +58,7 @@ async def update_user(
 
 
 @router.post(
-    "/{user_id}/block",
+    "/{user_id:int}/block",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "block"))],
 )
@@ -67,7 +67,7 @@ async def block_user(user_id: int, user_service: UserService = Depends(get_user_
 
 
 @router.post(
-    "/{user_id}/unblock",
+    "/{user_id:int}/unblock",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "unblock"))],
 )
@@ -76,7 +76,7 @@ async def unblock_user(user_id: int, user_service: UserService = Depends(get_use
 
 
 @router.post(
-    "/{user_id}/reset-password",
+    "/{user_id:int}/reset-password",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "reset_password"))],
 )
@@ -89,7 +89,7 @@ async def reset_user_password(
 
 
 @router.delete(
-    "/{user_id}",
+    "/{user_id:int}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_privilege("users", "delete"))],
 )
@@ -102,7 +102,7 @@ async def delete_user(
 
 
 @router.post(
-    "/{user_id}/restore",
+    "/{user_id:int}/restore",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
@@ -111,7 +111,7 @@ async def restore_user(user_id: int, user_service: UserService = Depends(get_use
 
 
 @router.post(
-    "/{user_id}/roles",
+    "/{user_id:int}/roles",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
@@ -124,7 +124,7 @@ async def assign_roles(
 
 
 @router.post(
-    "/{user_id}/roles/remove",
+    "/{user_id:int}/roles/remove",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
@@ -137,17 +137,17 @@ async def remove_roles(
 
 
 @router.get(
-    "/{user_id}",
-    response_model=UserSchema,
-    dependencies=[Depends(require_privilege("users", "read"))],
-)
-async def get_user_detail(user_id: int, user_service: UserService = Depends(get_user_service)) -> UserORM:
-    return await user_service.get_user_detail(user_id)
-
-
-@router.get(
     "/count",
     dependencies=[Depends(require_privilege("users", "read"))],
 )
 async def count_users(user_service: UserService = Depends(get_user_service)) -> dict[str, int]:
     return {"count": await user_service.count_users()}
+
+
+@router.get(
+    "/{user_id:int}",
+    response_model=UserSchema,
+    dependencies=[Depends(require_privilege("users", "read"))],
+)
+async def get_user_detail(user_id: int, user_service: UserService = Depends(get_user_service)) -> UserORM:
+    return await user_service.get_user_detail(user_id)

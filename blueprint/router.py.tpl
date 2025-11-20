@@ -16,7 +16,7 @@ async def list_business_{{ROUTE_NAME}}(session=Depends(get_db_session)):
     return await service.list()
 
 
-@router.get("/{entity_id}", response_model=business{{CLASS_NAME}}Read)
+@router.get("/{entity_id:int}", response_model=business{{CLASS_NAME}}Read)
 async def get_business_{{ROUTE_NAME}}(entity_id: int, session=Depends(get_db_session)):
     service = business{{CLASS_NAME}}Service(session)
     return await service.get(entity_id)
