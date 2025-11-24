@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 
@@ -29,10 +30,10 @@ async def count_role_privileges(
     return {"count": await service.count_links()}
 
 
-@router.get("/{role_id:int}/{privilege_id:int}", response_model=RolePrivilegeLinkSchema)
+@router.get("/{role_id}/{privilege_id}", response_model=RolePrivilegeLinkSchema)
 async def get_role_privilege(
-    role_id: int,
-    privilege_id: int,
+    role_id: UUID,
+    privilege_id: UUID,
     service: RolePrivilegeService = Depends(get_role_privilege_service),
 ) -> RolePrivilegeLinkSchema:
     return await service.get_link(role_id, privilege_id)
@@ -51,12 +52,12 @@ async def create_role_privilege(
 
 
 @router.delete(
-    "/{role_id:int}/{privilege_id:int}",
+    "/{role_id}/{privilege_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_role_privilege(
-    role_id: int,
-    privilege_id: int,
+    role_id: UUID,
+    privilege_id: UUID,
     service: RolePrivilegeService = Depends(get_role_privilege_service),
 ) -> None:
     await service.delete_link(role_id, privilege_id)

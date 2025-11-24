@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 
@@ -45,12 +46,12 @@ async def create_user(
 
 
 @router.patch(
-    "/{user_id:int}",
+    "/{user_id}",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
 async def update_user(
-    user_id: int,
+    user_id: UUID,
     payload: UserUpdateSchema,
     user_service: UserService = Depends(get_user_service),
 ) -> UserORM:
@@ -58,30 +59,30 @@ async def update_user(
 
 
 @router.post(
-    "/{user_id:int}/block",
+    "/{user_id}/block",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "block"))],
 )
-async def block_user(user_id: int, user_service: UserService = Depends(get_user_service)) -> UserORM:
+async def block_user(user_id: UUID, user_service: UserService = Depends(get_user_service)) -> UserORM:
     return await user_service.block_user(user_id)
 
 
 @router.post(
-    "/{user_id:int}/unblock",
+    "/{user_id}/unblock",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "unblock"))],
 )
-async def unblock_user(user_id: int, user_service: UserService = Depends(get_user_service)) -> UserORM:
+async def unblock_user(user_id: UUID, user_service: UserService = Depends(get_user_service)) -> UserORM:
     return await user_service.unblock_user(user_id)
 
 
 @router.post(
-    "/{user_id:int}/reset-password",
+    "/{user_id}/reset-password",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "reset_password"))],
 )
 async def reset_user_password(
-    user_id: int,
+    user_id: UUID,
     payload: UserPasswordResetSchema,
     user_service: UserService = Depends(get_user_service),
 ) -> UserORM:
@@ -89,12 +90,12 @@ async def reset_user_password(
 
 
 @router.delete(
-    "/{user_id:int}",
+    "/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_privilege("users", "delete"))],
 )
 async def delete_user(
-    user_id: int,
+    user_id: UUID,
     hard: bool = False,
     user_service: UserService = Depends(get_user_service),
 ) -> None:
@@ -102,21 +103,21 @@ async def delete_user(
 
 
 @router.post(
-    "/{user_id:int}/restore",
+    "/{user_id}/restore",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
-async def restore_user(user_id: int, user_service: UserService = Depends(get_user_service)) -> UserORM:
+async def restore_user(user_id: UUID, user_service: UserService = Depends(get_user_service)) -> UserORM:
     return await user_service.restore_user(user_id)
 
 
 @router.post(
-    "/{user_id:int}/roles",
+    "/{user_id}/roles",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
 async def assign_roles(
-    user_id: int,
+    user_id: UUID,
     payload: UserRoleUpdateSchema,
     user_service: UserService = Depends(get_user_service),
 ) -> UserORM:
@@ -124,12 +125,12 @@ async def assign_roles(
 
 
 @router.post(
-    "/{user_id:int}/roles/remove",
+    "/{user_id}/roles/remove",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "update"))],
 )
 async def remove_roles(
-    user_id: int,
+    user_id: UUID,
     payload: UserRoleUpdateSchema,
     user_service: UserService = Depends(get_user_service),
 ) -> UserORM:
@@ -145,9 +146,9 @@ async def count_users(user_service: UserService = Depends(get_user_service)) -> 
 
 
 @router.get(
-    "/{user_id:int}",
+    "/{user_id}",
     response_model=UserSchema,
     dependencies=[Depends(require_privilege("users", "read"))],
 )
-async def get_user_detail(user_id: int, user_service: UserService = Depends(get_user_service)) -> UserORM:
+async def get_user_detail(user_id: UUID, user_service: UserService = Depends(get_user_service)) -> UserORM:
     return await user_service.get_user_detail(user_id)

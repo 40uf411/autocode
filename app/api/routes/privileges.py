@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 
@@ -51,12 +52,12 @@ async def create_privilege(
 
 
 @router.patch(
-    "/{privilege_id:int}",
+    "/{privilege_id}",
     response_model=PrivilegeSchema,
     dependencies=[Depends(require_privilege("privileges", "update"))],
 )
 async def update_privilege(
-    privilege_id: int,
+    privilege_id: UUID,
     payload: PrivilegeUpdateSchema,
     privilege_service: PrivilegeService = Depends(get_privilege_service),
 ) -> PrivilegeORM:
@@ -69,12 +70,12 @@ async def update_privilege(
 
 
 @router.delete(
-    "/{privilege_id:int}",
+    "/{privilege_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_privilege("privileges", "delete"))],
 )
 async def delete_privilege(
-    privilege_id: int,
+    privilege_id: UUID,
     hard: bool = False,
     privilege_service: PrivilegeService = Depends(get_privilege_service),
 ) -> None:
@@ -82,12 +83,12 @@ async def delete_privilege(
 
 
 @router.post(
-    "/{privilege_id:int}/restore",
+    "/{privilege_id}/restore",
     response_model=PrivilegeSchema,
     dependencies=[Depends(require_privilege("privileges", "update"))],
 )
 async def restore_privilege(
-    privilege_id: int,
+    privilege_id: UUID,
     privilege_service: PrivilegeService = Depends(get_privilege_service),
 ) -> PrivilegeORM:
     return await privilege_service.restore_privilege(privilege_id)

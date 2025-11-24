@@ -1,4 +1,5 @@
 from typing import List, Optional
+from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,5 +13,5 @@ class business{{CLASS_NAME}}Service:
     async def list(self) -> List:
         return await self.repo.list()
 
-    async def get(self, entity_id: int) -> Optional:
+    async def get(self, entity_id: UUID) -> Optional:
         return await self.repo.get(entity_id)

@@ -1,4 +1,5 @@
 from typing import Callable
+from uuid import UUID
 
 import jwt
 from fastapi import Depends, HTTPException, Request, status
@@ -64,7 +65,7 @@ async def get_current_user(
     )
     try:
         payload = decode_access_token(token)
-        user_id = int(payload.get("sub"))
+        user_id = UUID(str(payload.get("sub")))
     except (jwt.PyJWTError, ValueError, TypeError):
         raise credentials_exception
     if await token_blocklist.is_revoked(token):

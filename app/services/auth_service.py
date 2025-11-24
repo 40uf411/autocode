@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,7 +21,7 @@ class AuthService:
         token = create_access_token({"sub": str(user.id), "email": user.email})
         return token
 
-    async def assert_privilege(self, user_id: int, resource: str, action: str) -> None:
+    async def assert_privilege(self, user_id: UUID, resource: str, action: str) -> None:
         if await self.user_repo.user_is_superuser(user_id):
             return
         has_permission = await self.user_repo.user_has_privilege(user_id, resource, action)

@@ -1,4 +1,5 @@
 from typing import List, Optional
+from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -14,6 +15,6 @@ class business{{CLASS_NAME}}Repository:
         result = await self.session.execute(select({{ORM_CLASS}}))
         return result.scalars().all()
 
-    async def get(self, entity_id: int) -> Optional[{{ORM_CLASS}}]:
+    async def get(self, entity_id: UUID) -> Optional[{{ORM_CLASS}}]:
         result = await self.session.execute(select({{ORM_CLASS}}).where({{ORM_CLASS}}.id == entity_id))
         return result.scalar_one_or_none()

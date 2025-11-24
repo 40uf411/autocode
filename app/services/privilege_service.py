@@ -1,4 +1,5 @@
 from typing import List, Optional
+from uuid import UUID
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -37,7 +38,7 @@ class PrivilegeService:
 
     async def update_privilege(
         self,
-        privilege_id: int,
+        privilege_id: UUID,
         *,
         resource: Optional[str] = None,
         action: Optional[str] = None,
@@ -50,7 +51,7 @@ class PrivilegeService:
         await self.session.commit()
         return updated
 
-    async def delete_privilege(self, privilege_id: int, *, hard: bool = False) -> None:
+    async def delete_privilege(self, privilege_id: UUID, *, hard: bool = False) -> None:
         privilege = await self._require_privilege(privilege_id, include_deleted=True)
         if hard:
             await self.repo.hard_delete(privilege)
@@ -58,7 +59,7 @@ class PrivilegeService:
             await self.repo.soft_delete(privilege)
         await self.session.commit()
 
-    async def restore_privilege(self, privilege_id: int) -> PrivilegeORM:
+    async def restore_privilege(self, privilege_id: UUID) -> PrivilegeORM:
         privilege = await self._require_privilege(privilege_id, include_deleted=True)
         if privilege.deleted_at is None:
             return privilege
@@ -67,7 +68,7 @@ class PrivilegeService:
         return restored
 
     async def _require_privilege(
-        self, privilege_id: int, include_deleted: bool = False
+        self, privilege_id: UUID, include_deleted: bool = False
     ) -> PrivilegeORM:
         privilege = await self.repo.get_by_id(privilege_id, include_deleted=include_deleted)
         if not privilege or (privilege.deleted_at and not include_deleted):

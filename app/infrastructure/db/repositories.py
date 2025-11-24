@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import List, Optional
+from uuid import UUID, uuid4
 
 from sqlalchemy import (
     Boolean,
@@ -12,6 +13,7 @@ from sqlalchemy import (
     String,
     Table,
     UniqueConstraint,
+    Uuid,
     and_,
     func,
     select,
@@ -25,7 +27,7 @@ from app.infrastructure.db.base import Base
 
 @dataclass
 class UserSummary:
-    id: int
+    id: UUID
     email: str
     is_active: bool
     is_blocked: bool
@@ -33,15 +35,15 @@ class UserSummary:
 
 @dataclass
 class RoleSummary:
-    id: int
+    id: UUID
     name: str
     is_superuser: bool
 
 
 @dataclass
 class RolePrivilegeLink:
-    role_id: int
-    privilege_id: int
+    role_id: UUID
+    privilege_id: UUID
     role_name: str
     privilege_resource: str
     privilege_action: str
@@ -50,8 +52,8 @@ class RolePrivilegeLink:
 user_roles = Table(
     "user_roles",
     Base.metadata,
-    Column("user_id", ForeignKey("users.id"), primary_key=True),
-    Column("role_id", ForeignKey("roles.id"), primary_key=True),
+    Column("user_id", Uuid, ForeignKey("users.id"), primary_key=True),
+    Column("role_id", Uuid, ForeignKey("roles.id"), primary_key=True),
     Index("ix_user_roles_user_id", "user_id"),
     Index("ix_user_roles_role_id", "role_id"),
 )
@@ -59,8 +61,8 @@ user_roles = Table(
 role_privileges = Table(
     "role_privileges",
     Base.metadata,
-    Column("role_id", ForeignKey("roles.id"), primary_key=True),
-    Column("privilege_id", ForeignKey("privileges.id"), primary_key=True),
+    Column("role_id", Uuid, ForeignKey("roles.id"), primary_key=True),
+    Column("privilege_id", Uuid, ForeignKey("privileges.id"), primary_key=True),
     Index("ix_role_privileges_role_id", "role_id"),
     Index("ix_role_privileges_privilege_id", "privilege_id"),
 )
@@ -69,7 +71,7 @@ role_privileges = Table(
 class PrivilegeORM(Base):
     __tablename__ = "privileges"
     __editable__ = True
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
     resource: Mapped[str] = mapped_column(String(50), nullable=False)
     action: Mapped[str] = mapped_column(String(20), nullable=False)
     description: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
@@ -93,7 +95,7 @@ class RoleORM(Base):
     __tablename__ = "roles"
     __editable__ = True
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
@@ -122,7 +124,7 @@ class UserORM(Base):
     __tablename__ = "users"
     __editable__ = True
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
@@ -151,8 +153,8 @@ class UserORM(Base):
 class ActivityLogORM(Base):
     __tablename__ = "activity_logs"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"), nullable=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    user_id: Mapped[Optional[UUID]] = mapped_column(Uuid, ForeignKey("users.id"), nullable=True)
     method: Mapped[str] = mapped_column(String(10), nullable=False)
     path: Mapped[str] = mapped_column(String(255), nullable=False)
     status_code: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -172,7 +174,7 @@ class PrivilegeRepository:
         self.session = session
 
     async def get_by_id(
-        self, privilege_id: int, include_deleted: bool = False
+        self, privilege_id: UUID, include_deleted: bool = False
     ) -> Optional[PrivilegeORM]:
         stmt = select(PrivilegeORM).where(PrivilegeORM.id == privilege_id)
         if not include_deleted:
@@ -256,7 +258,7 @@ class RoleRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def get_by_id(self, role_id: int, include_deleted: bool = False) -> Optional[RoleORM]:
+    async def get_by_id(self, role_id: UUID, include_deleted: bool = False) -> Optional[RoleORM]:
         stmt = select(RoleORM).options(selectinload(RoleORM.privileges)).where(RoleORM.id == role_id)
         if not include_deleted:
             stmt = stmt.where(RoleORM.deleted_at.is_(None))
@@ -266,7 +268,7 @@ class RoleRepository:
     async def create(
         self,
         name: str,
-        privilege_ids: Optional[List[int]] = None,
+        privilege_ids: Optional[List[UUID]] = None,
         is_superuser: bool = False,
     ) -> RoleORM:
         if is_superuser:
@@ -329,7 +331,7 @@ class RoleRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one()
 
-    async def get_detailed_by_id(self, role_id: int) -> Optional[RoleORM]:
+    async def get_detailed_by_id(self, role_id: UUID) -> Optional[RoleORM]:
         stmt = (
             select(RoleORM)
             .options(selectinload(RoleORM.privileges))
@@ -370,7 +372,7 @@ class RoleRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def _assert_single_super_role(self, exclude_role_id: Optional[int] = None) -> None:
+    async def _assert_single_super_role(self, exclude_role_id: Optional[UUID] = None) -> None:
         stmt = select(RoleORM).where(RoleORM.is_superuser.is_(True))
         if exclude_role_id is not None:
             stmt = stmt.where(RoleORM.id != exclude_role_id)
@@ -418,7 +420,7 @@ class RolePrivilegeRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one()
 
-    async def get_link(self, role_id: int, privilege_id: int) -> Optional[RolePrivilegeLink]:
+    async def get_link(self, role_id: UUID, privilege_id: UUID) -> Optional[RolePrivilegeLink]:
         stmt = (
             select(
                 role_privileges.c.role_id.label("role_id"),
@@ -478,7 +480,7 @@ class UserRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def get_by_id(self, user_id: int) -> Optional[UserORM]:
+    async def get_by_id(self, user_id: UUID) -> Optional[UserORM]:
         stmt = (
             select(UserORM)
             .where(UserORM.id == user_id, UserORM.deleted_at.is_(None))
@@ -486,7 +488,7 @@ class UserRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def get_by_id_include_deleted(self, user_id: int) -> Optional[UserORM]:
+    async def get_by_id_include_deleted(self, user_id: UUID) -> Optional[UserORM]:
         stmt = (
             select(UserORM)
             .where(UserORM.id == user_id)
@@ -500,7 +502,7 @@ class UserRepository:
         email: str,
         password: str,
         is_blocked: bool = False,
-        role_ids: Optional[List[int]] = None,
+        role_ids: Optional[List[UUID]] = None,
     ) -> UserORM:
         user = UserORM(
             email=email,
@@ -516,7 +518,7 @@ class UserRepository:
         await self.session.flush()
         return user
 
-    async def get_detailed_by_id(self, user_id: int) -> Optional[UserORM]:
+    async def get_detailed_by_id(self, user_id: UUID) -> Optional[UserORM]:
         stmt = (
             select(UserORM)
             .where(UserORM.id == user_id, UserORM.deleted_at.is_(None))
@@ -525,7 +527,7 @@ class UserRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def attach_roles(self, user: UserORM, role_ids: List[int]) -> None:
+    async def attach_roles(self, user: UserORM, role_ids: List[UUID]) -> None:
         stmt = select(RoleORM).where(RoleORM.id.in_(role_ids), RoleORM.deleted_at.is_(None))
         roles = (await self.session.scalars(stmt)).all()
         for role in roles:
@@ -533,7 +535,7 @@ class UserRepository:
                 user.roles.append(role)
         await self.session.flush()
 
-    async def detach_roles(self, user: UserORM, role_ids: List[int]) -> None:
+    async def detach_roles(self, user: UserORM, role_ids: List[UUID]) -> None:
         user.roles = [role for role in user.roles if role.id not in role_ids]
         await self.session.flush()
 
@@ -542,7 +544,7 @@ class UserRepository:
         user: UserORM,
         *,
         email: Optional[str] = None,
-        role_ids: Optional[List[int]] = None,
+        role_ids: Optional[List[UUID]] = None,
     ) -> UserORM:
         if email:
             user.email = email
@@ -577,7 +579,7 @@ class UserRepository:
     async def hard_delete(self, user: UserORM) -> None:
         await self.session.delete(user)
 
-    async def user_has_privilege(self, user_id: int, resource: str, action: str) -> bool:
+    async def user_has_privilege(self, user_id: UUID, resource: str, action: str) -> bool:
         stmt = (
             select(func.count(PrivilegeORM.id))
             .select_from(UserORM)
@@ -599,7 +601,7 @@ class UserRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one() > 0
 
-    async def user_is_superuser(self, user_id: int) -> bool:
+    async def user_is_superuser(self, user_id: UUID) -> bool:
         stmt = (
             select(func.count(RoleORM.id))
             .select_from(UserORM)
@@ -618,7 +620,7 @@ class ActivityLogRepository:
     async def create_log(
         self,
         *,
-        user_id: Optional[int],
+        user_id: Optional[UUID],
         method: str,
         path: str,
         status_code: int,

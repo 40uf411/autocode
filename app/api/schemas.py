@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
+from uuid import UUID
 
 from pydantic import BaseModel, EmailStr
 
@@ -17,7 +18,7 @@ class TokenResponse(BaseModel):
 class PrivilegeSchema(BaseModel):
     model_config = {"from_attributes": True}
 
-    id: int
+    id: UUID
     resource: str
     action: str
     description: Optional[str]
@@ -38,7 +39,7 @@ class PrivilegeUpdateSchema(BaseModel):
 class RoleSchema(BaseModel):
     model_config = {"from_attributes": True}
 
-    id: int
+    id: UUID
     name: str
     is_superuser: bool
     privileges: List[PrivilegeSchema]
@@ -47,7 +48,7 @@ class RoleSchema(BaseModel):
 class RoleSummarySchema(BaseModel):
     model_config = {"from_attributes": True}
 
-    id: int
+    id: UUID
     name: str
     is_superuser: bool
 
@@ -67,29 +68,29 @@ class RoleUpdateSchema(BaseModel):
 class RolePrivilegeLinkSchema(BaseModel):
     model_config = {"from_attributes": True}
 
-    role_id: int
+    role_id: UUID
     role_name: str
-    privilege_id: int
+    privilege_id: UUID
     privilege_resource: str
     privilege_action: str
     privilege_description: Optional[str] = None
 
 
 class RolePrivilegeLinkCreateSchema(BaseModel):
-    role_id: int
-    privilege_id: int
+    role_id: UUID
+    privilege_id: UUID
 
 
 class UserCreateSchema(BaseModel):
     email: EmailStr
     password: str
-    role_ids: Optional[List[int]] = None
+    role_ids: Optional[List[UUID]] = None
 
 
 class UserSchema(BaseModel):
     model_config = {"from_attributes": True}
 
-    id: int
+    id: UUID
     email: EmailStr
     is_active: bool
     is_blocked: bool
@@ -100,7 +101,7 @@ class UserSchema(BaseModel):
 class UserSummarySchema(BaseModel):
     model_config = {"from_attributes": True}
 
-    id: int
+    id: UUID
     email: EmailStr
     is_active: bool
     is_blocked: bool
@@ -108,7 +109,7 @@ class UserSummarySchema(BaseModel):
 
 class UserUpdateSchema(BaseModel):
     email: Optional[EmailStr] = None
-    role_ids: Optional[List[int]] = None
+    role_ids: Optional[List[UUID]] = None
 
 
 class UserPasswordResetSchema(BaseModel):
@@ -121,4 +122,4 @@ class SelfPasswordResetSchema(BaseModel):
 
 
 class UserRoleUpdateSchema(BaseModel):
-    role_ids: List[int]
+    role_ids: List[UUID]

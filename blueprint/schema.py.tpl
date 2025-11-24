@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -13,5 +14,5 @@ class business{{CLASS_NAME}}Create(business{{CLASS_NAME}}Base):
 
 
 class business{{CLASS_NAME}}Read(business{{CLASS_NAME}}Base):
-    id: int
+    id: UUID
     created_at: Optional[datetime] = None

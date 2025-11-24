@@ -4,6 +4,7 @@ This template delivers a FastAPI project organised using clean architecture with
 
 ## Features
 - Full authentication stack: users, roles, privileges, and linking tables with SQLAlchemy indexes and auditing columns (`template/app/infrastructure/db/repositories.py:1`).
+- UUID primary keys everywhere to prevent ID enumeration and make resource identifiers hard to guess.
 - JWT login that rejects blocked/soft-deleted accounts plus per-endpoint privilege enforcement via dependencies (`template/app/api/dependencies.py:1`, `template/app/api/routes/users.py:1`).
 - DragonflyDB-backed caching for user fetches and JWT blocklists with a local TTL fallback for tests (`template/app/core/caching.py:1`, `template/app/services/user_service.py:1`, `template/app/services/token_service.py:1`).
 - Database adapters for SQLite and Postgres, seeded admin role/user, and resettable session factory (`template/app/infrastructure/db/adapters`, `template/app/infrastructure/db/session.py:1`, `template/app/infrastructure/db/seeds.py:1`).
@@ -56,7 +57,7 @@ Describe one or more entities in `entities.json`, e.g.
     "name": "Rig",
     "table": "rigs",
     "attributes": [
-      {"name": "id", "type": "int", "primary_key": true, "nullable": false},
+      {"name": "id", "type": "uuid", "primary_key": true, "nullable": false},
       {"name": "name", "type": "string", "nullable": false}
     ]
   }

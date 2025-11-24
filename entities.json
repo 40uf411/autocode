@@ -3,7 +3,7 @@
     "name": "Country",
     "table": "countries",
     "attributes": [
-      {"name": "id", "type": "int", "primary_key": true, "nullable": false},
+      {"name": "id", "type": "uuid", "primary_key": true, "nullable": false},
       {"name": "code", "type": "string", "nullable": false, "length": 3},
       {"name": "name", "type": "string", "nullable": false}
     ]
@@ -12,7 +12,7 @@
     "name": "Equipment",
     "table": "equipment",
     "attributes": [
-      {"name": "id", "type": "int", "primary_key": true, "nullable": false},
+      {"name": "id", "type": "uuid", "primary_key": true, "nullable": false},
       {"name": "serial_number", "type": "string", "nullable": false},
       {"name": "type", "type": "string", "nullable": false},
       {"name": "country_id", "type": "reference", "target": "countries.id", "nullable": false},
@@ -24,7 +24,7 @@
     "name": "Employee",
     "table": "employees",
     "attributes": [
-      {"name": "id", "type": "int", "primary_key": true, "nullable": false},
+      {"name": "id", "type": "uuid", "primary_key": true, "nullable": false},
       {"name": "user_id", "type": "reference", "target": "users.id", "nullable": false},
       {"name": "country_id", "type": "reference", "target": "countries.id", "nullable": true},
       {"name": "assigned_equipment", "type": "list", "target": "Equipment", "back_populates": "owner"}

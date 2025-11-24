@@ -14,6 +14,7 @@ OUTPUTS = {
 }
 PRIMITIVES = {
     "int": {"column": "Integer", "python": "int", "import": "Integer"},
+    "uuid": {"column": "Uuid", "python": "UUID", "import": "Uuid"},
     "string": {"column": "String(255)", "python": "str", "import": "String"},
     "text": {"column": "Text", "python": "str", "import": "Text"},
     "bool": {"column": "Boolean", "python": "bool", "import": "Boolean"},
@@ -75,6 +76,7 @@ def build_model_context(entity: dict) -> Dict[str, str]:
         "from sqlalchemy.orm import Mapped, mapped_column",
     }
     sqlalchemy_imports: set[str] = set()
+    uuid_imports: set[str] = set()
     needs_datetime = False
     field_lines = []
     for attr in attrs:
@@ -87,10 +89,19 @@ def build_model_context(entity: dict) -> Dict[str, str]:
         if a_type == "reference":
             target = attr["target"]
             sqlalchemy_imports.add("ForeignKey")
+            sqlalchemy_imports.add("Uuid")
             python_type = attr.get("python_type")
             if not python_type:
-                python_type = "int" if not nullable else "int | None"
-            line = f"    {name}: Mapped[{python_type}] = mapped_column(ForeignKey('{target}'), nullable={nullable})"
+                python_type = "UUID" if not nullable else "UUID | None"
+            if "UUID" in python_type:
+                uuid_imports.add("UUID")
+            line = (
+                f"    {name}: Mapped[{python_type}] = mapped_column("
+                f"Uuid, ForeignKey('{target}'), nullable={nullable}"
+            )
+            if default is not None:
+                line += f", default={default!r}"
+            line += ")"
         elif a_type == "list":
             target = attr["target"]
             target_class = target if target.endswith("ORM") else f"{target}ORM"
@@ -127,6 +138,8 @@ def build_model_context(entity: dict) -> Dict[str, str]:
                 sqlalchemy_imports.add(base_import)
             if "datetime" in py_type:
                 needs_datetime = True
+            if "UUID" in py_type:
+                uuid_imports.add("UUID")
             params = []
             if primary_key:
                 params.append("primary_key=True")
@@ -134,11 +147,16 @@ def build_model_context(entity: dict) -> Dict[str, str]:
                 params.append("nullable=False")
             if default is not None:
                 params.append(f"default={default!r}")
+            elif a_type == "uuid" and primary_key:
+                params.append("default=uuid4")
+                uuid_imports.add("uuid4")
             param_str = ", " + ", ".join(params) if params else ""
             line = f"    {name}: Mapped[{py_type}] = mapped_column({sql_type}{param_str})"
         field_lines.append(line)
     if sqlalchemy_imports:
         imports.add("from sqlalchemy import " + ", ".join(sorted(sqlalchemy_imports)))
+    if uuid_imports:
+        imports.add("from uuid import " + ", ".join(sorted(uuid_imports)))
     if needs_datetime:
         imports.add("from datetime import datetime")
     # Ensure imports are consistently ordered for determinism

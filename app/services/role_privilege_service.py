@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,7 +28,7 @@ class RolePrivilegeService:
     async def count_links(self) -> int:
         return await self.link_repo.count_links()
 
-    async def get_link(self, role_id: int, privilege_id: int) -> RolePrivilegeLink:
+    async def get_link(self, role_id: UUID, privilege_id: UUID) -> RolePrivilegeLink:
         link = await self.link_repo.get_link(role_id, privilege_id)
         if not link:
             raise HTTPException(
@@ -36,7 +37,7 @@ class RolePrivilegeService:
             )
         return link
 
-    async def create_link(self, role_id: int, privilege_id: int) -> RolePrivilegeLink:
+    async def create_link(self, role_id: UUID, privilege_id: UUID) -> RolePrivilegeLink:
         role = await self.role_repo.get_by_id(role_id)
         if not role or role.deleted_at:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found")
@@ -47,7 +48,7 @@ class RolePrivilegeService:
         await self.session.commit()
         return await self.get_link(role_id, privilege_id)
 
-    async def delete_link(self, role_id: int, privilege_id: int) -> None:
+    async def delete_link(self, role_id: UUID, privilege_id: UUID) -> None:
         link = await self.link_repo.get_link(role_id, privilege_id)
         if not link:
             raise HTTPException(

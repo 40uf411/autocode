@@ -1,4 +1,5 @@
 from typing import List, Optional, Sequence, Tuple
+from uuid import UUID
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -44,7 +45,7 @@ class RoleService:
 
     async def update_role(
         self,
-        role_id: int,
+        role_id: UUID,
         *,
         name: Optional[str] = None,
         privileges: Optional[Sequence[Tuple[str, str]]] = None,
@@ -62,7 +63,7 @@ class RoleService:
         await self.session.commit()
         return await self.role_repo.get_by_id(updated_role.id, include_deleted=False)  # type: ignore[arg-type]
 
-    async def delete_role(self, role_id: int, *, hard: bool = False) -> None:
+    async def delete_role(self, role_id: UUID, *, hard: bool = False) -> None:
         role = await self._require_role(role_id, include_deleted=True)
         if hard:
             await self.role_repo.hard_delete(role)
@@ -70,7 +71,7 @@ class RoleService:
             await self.role_repo.soft_delete(role)
         await self.session.commit()
 
-    async def restore_role(self, role_id: int) -> RoleORM:
+    async def restore_role(self, role_id: UUID) -> RoleORM:
         role = await self._require_role(role_id, include_deleted=True)
         if role.deleted_at is None:
             return role
@@ -81,13 +82,13 @@ class RoleService:
     async def get_role_by_name(self, name: str) -> Optional[RoleORM]:
         return await self.role_repo.get_by_name(name)
 
-    async def get_role_detail(self, role_id: int) -> RoleORM:
+    async def get_role_detail(self, role_id: UUID) -> RoleORM:
         role = await self.role_repo.get_detailed_by_id(role_id)
         if not role:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found")
         return role
 
-    async def _require_role(self, role_id: int, include_deleted: bool = False) -> RoleORM:
+    async def _require_role(self, role_id: UUID, include_deleted: bool = False) -> RoleORM:
         role = await self.role_repo.get_by_id(role_id, include_deleted=include_deleted)
         if not role or (role.deleted_at and not include_deleted):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Role not found")
@@ -100,14 +101,14 @@ class RoleService:
             privilege = await self.privilege_repo.get_or_create(resource, action)
             await self.role_repo.attach_privilege(role, privilege)
 
-    async def grant_privilege(self, role_id: int, resource: str, action: str) -> RoleORM:
+    async def grant_privilege(self, role_id: UUID, resource: str, action: str) -> RoleORM:
         role = await self._require_role(role_id)
         privilege = await self.privilege_repo.get_or_create(resource, action)
         await self.role_repo.attach_privilege(role, privilege)
         await self.session.commit()
         return await self.role_repo.get_by_id(role_id)
 
-    async def revoke_privilege(self, role_id: int, privilege_id: int) -> RoleORM:
+    async def revoke_privilege(self, role_id: UUID, privilege_id: UUID) -> RoleORM:
         role = await self._require_role(role_id)
         privilege = await self.privilege_repo.get_by_id(privilege_id, include_deleted=False)
         if not privilege:

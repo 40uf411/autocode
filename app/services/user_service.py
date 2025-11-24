@@ -1,6 +1,7 @@
 from datetime import datetime
 from types import SimpleNamespace
 from typing import Any, Dict, List, Optional
+from uuid import UUID
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -66,7 +67,7 @@ class UserService:
         self.cache = cache or get_cache_backend()
         self.repo = UserRepository(session)
 
-    async def get_by_id(self, user_id: int) -> Optional[UserORM]:
+    async def get_by_id(self, user_id: UUID) -> Optional[UserORM]:
         cache_key = f"user:id:{user_id}"
         cached = await self.cache.get(cache_key)
         if cached:
@@ -86,7 +87,7 @@ class UserService:
             await self.cache.set(cache_key, _serialize_user(user))
         return user
 
-    async def create_user(self, email: str, password: str, role_ids: Optional[List[int]]) -> UserORM:
+    async def create_user(self, email: str, password: str, role_ids: Optional[List[UUID]]) -> UserORM:
         user = await self.repo.create_user(email=email, password=password, role_ids=role_ids)
         await self._invalidate_cache(user)
         await self.session.commit()
@@ -103,10 +104,10 @@ class UserService:
 
     async def update_user(
         self,
-        user_id: int,
+        user_id: UUID,
         *,
         email: Optional[str] = None,
-        role_ids: Optional[List[int]] = None,
+        role_ids: Optional[List[UUID]] = None,
     ) -> UserORM:
         user = await self._require_user(user_id, include_deleted=False)
         updated = await self.repo.update_user(user, email=email, role_ids=role_ids)
@@ -114,28 +115,28 @@ class UserService:
         await self.session.commit()
         return updated
 
-    async def block_user(self, user_id: int) -> UserORM:
+    async def block_user(self, user_id: UUID) -> UserORM:
         user = await self._require_user(user_id)
         updated = await self.repo.set_block_status(user, True)
         await self._invalidate_cache(updated)
         await self.session.commit()
         return updated
 
-    async def unblock_user(self, user_id: int) -> UserORM:
+    async def unblock_user(self, user_id: UUID) -> UserORM:
         user = await self._require_user(user_id)
         updated = await self.repo.set_block_status(user, False)
         await self._invalidate_cache(updated)
         await self.session.commit()
         return updated
 
-    async def reset_password(self, user_id: int, new_password: str) -> UserORM:
+    async def reset_password(self, user_id: UUID, new_password: str) -> UserORM:
         user = await self._require_user(user_id)
         updated = await self.repo.reset_password(user, new_password)
         await self._invalidate_cache(updated)
         await self.session.commit()
         return updated
 
-    async def delete_user(self, user_id: int, *, hard: bool = False) -> None:
+    async def delete_user(self, user_id: UUID, *, hard: bool = False) -> None:
         user = await self._require_user(user_id, include_deleted=True)
         if hard:
             await self.repo.hard_delete(user)
@@ -144,7 +145,7 @@ class UserService:
         await self._invalidate_cache(user)
         await self.session.commit()
 
-    async def restore_user(self, user_id: int) -> UserORM:
+    async def restore_user(self, user_id: UUID) -> UserORM:
         user = await self._require_user(user_id, include_deleted=True)
         if user.deleted_at is None:
             return user
@@ -153,21 +154,21 @@ class UserService:
         await self.session.commit()
         return restored
 
-    async def assign_roles(self, user_id: int, role_ids: List[int]) -> UserORM:
+    async def assign_roles(self, user_id: UUID, role_ids: List[UUID]) -> UserORM:
         user = await self._require_user(user_id)
         await self.repo.attach_roles(user, role_ids)
         await self._invalidate_cache(user)
         await self.session.commit()
         return await self.repo.get_detailed_by_id(user_id)
 
-    async def remove_roles(self, user_id: int, role_ids: List[int]) -> UserORM:
+    async def remove_roles(self, user_id: UUID, role_ids: List[UUID]) -> UserORM:
         user = await self._require_user(user_id)
         await self.repo.detach_roles(user, role_ids)
         await self._invalidate_cache(user)
         await self.session.commit()
         return await self.repo.get_by_id(user_id)
 
-    async def get_user_detail(self, user_id: int) -> UserORM:
+    async def get_user_detail(self, user_id: UUID) -> UserORM:
         user = await self.repo.get_detailed_by_id(user_id)
         if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -180,7 +181,7 @@ class UserService:
         if user.id:
             await self.cache.delete(f"user:id:{user.id}")
 
-    async def _require_user(self, user_id: int, include_deleted: bool = False) -> UserORM:
+    async def _require_user(self, user_id: UUID, include_deleted: bool = False) -> UserORM:
         user = (
             await self.repo.get_by_id_include_deleted(user_id)
             if include_deleted

@@ -1,4 +1,5 @@
 from typing import List
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 
@@ -47,12 +48,12 @@ async def create_role(
 
 
 @router.post(
-    "/{role_id:int}/privileges",
+    "/{role_id}/privileges",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )
 async def grant_privilege_to_role(
-    role_id: int,
+    role_id: UUID,
     payload: PrivilegeSchema,
     role_service: RoleService = Depends(get_role_service),
 ) -> RoleORM:
@@ -60,13 +61,13 @@ async def grant_privilege_to_role(
 
 
 @router.delete(
-    "/{role_id:int}/privileges/{privilege_id:int}",
+    "/{role_id}/privileges/{privilege_id}",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )
 async def revoke_privilege_from_role(
-    role_id: int,
-    privilege_id: int,
+    role_id: UUID,
+    privilege_id: UUID,
     role_service: RoleService = Depends(get_role_service),
 ) -> RoleORM:
     return await role_service.revoke_privilege(role_id, privilege_id)
@@ -84,21 +85,21 @@ async def count_roles(
 
 
 @router.get(
-    "/{role_id:int}",
+    "/{role_id}",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "read"))],
 )
-async def get_role_detail(role_id: int, role_service: RoleService = Depends(get_role_service)) -> RoleORM:
+async def get_role_detail(role_id: UUID, role_service: RoleService = Depends(get_role_service)) -> RoleORM:
     return await role_service.get_role_detail(role_id)
 
 
 @router.patch(
-    "/{role_id:int}",
+    "/{role_id}",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )
 async def update_role(
-    role_id: int,
+    role_id: UUID,
     payload: RoleUpdateSchema,
     role_service: RoleService = Depends(get_role_service),
 ) -> RoleORM:
@@ -114,12 +115,12 @@ async def update_role(
 
 
 @router.delete(
-    "/{role_id:int}",
+    "/{role_id}",
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_privilege("roles", "delete"))],
 )
 async def delete_role(
-    role_id: int,
+    role_id: UUID,
     hard: bool = False,
     role_service: RoleService = Depends(get_role_service),
 ) -> None:
@@ -127,9 +128,9 @@ async def delete_role(
 
 
 @router.post(
-    "/{role_id:int}/restore",
+    "/{role_id}/restore",
     response_model=RoleSchema,
     dependencies=[Depends(require_privilege("roles", "update"))],
 )
-async def restore_role(role_id: int, role_service: RoleService = Depends(get_role_service)) -> RoleORM:
+async def restore_role(role_id: UUID, role_service: RoleService = Depends(get_role_service)) -> RoleORM:
     return await role_service.restore_role(role_id)

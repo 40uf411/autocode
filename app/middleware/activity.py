@@ -1,5 +1,6 @@
 import logging
 from typing import Optional
+from uuid import UUID
 
 import jwt
 from fastapi import FastAPI, Request
@@ -17,12 +18,12 @@ def register_activity_middleware(app: FastAPI) -> None:
         response = await call_next(request)
 
         token = request.headers.get("authorization", "")
-        user_id: Optional[int] = getattr(request.state, "user_id", None)
+        user_id: Optional[UUID] = getattr(request.state, "user_id", None)
         if token.lower().startswith("bearer "):
             raw = token.split(" ", 1)[1]
             try:
                 payload = decode_access_token(raw)
-                user_id = int(payload.get("sub"))
+                user_id = UUID(str(payload.get("sub")))
             except (jwt.PyJWTError, ValueError, TypeError):
                 user_id = None
 
@@ -52,7 +53,7 @@ def register_activity_middleware(app: FastAPI) -> None:
 
         activity_logger.info(
             "%s %s %s %s %s",
-            user_id or "anonymous",
+            str(user_id) if user_id else "anonymous",
             request.method,
             request.url.path,
             response.status_code,
