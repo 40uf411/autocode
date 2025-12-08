@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Class Diagram</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+    }
+    #toolbar {
+      padding: 0.5rem 1rem;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    #diagram-frame {
+      margin: 1rem;
+      padding: 1rem;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    }
+    #diagram-container {
+      overflow: auto;
+    }
+    button {
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    /* Mermaid class diagram styling */
+    .mermaid .classGroup rect {
+      fill: #f5f3ff;
+      stroke: #7c3aed;
+      stroke-width: 1.2px;
+      rx: 6;
+      ry: 6;
+    }
+    .mermaid .classTitle {
+      fill: #ede9fe;
+      stroke: #7c3aed;
+    }
+    .mermaid .classText {
+      fill: #111827;
+      font-size: 11px;
+    }
+    .mermaid .classLabel {
+      fill: #111827;
+      font-weight: 600;
+    }
+    .mermaid .edgeLabel text {
+      font-size: 10px;
+      fill: #111827;
+    }
+    /* Make relation labels look like small rounded boxes */
+    .mermaid .edgeLabel > rect,
+    .mermaid .edgeLabel > g > rect {
+      fill: #ffffff;
+      stroke: #9ca3af;
+      stroke-width: 1px;
+      rx: 6;
+      ry: 6;
+    }
+  </style>
+
+  <!-- Mermaid for diagram rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <!-- html2canvas for screenshots -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'loose' });
+      mermaid.init(undefined, '.mermaid');
+
+      document.getElementById('btn-screenshot').addEventListener('click', function () {
+        var frame = document.getElementById('diagram-frame');
+        html2canvas(frame, {
+          backgroundColor: '#ffffff',
+          scale: 2
+        }).then(function (canvas) {
+          var link = document.createElement('a');
+          link.download = 'class_diagram.png';
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="toolbar">
+    <button id="btn-screenshot">Download diagram as PNG</button>
+  </div>
+
+  <div id="diagram-frame">
+    <div id="diagram-container" class="mermaid">
+%%{init: { 'theme': 'neutral', 'classDiagram': {   'diagramPadding': 30,   'minEntityWidth': 160,   'minEntityHeight': 70 }}}%%
+classDiagram
+direction LR
+    class BHAConfiguration {
+        + operation_id: reference [NOT NULL]
+        + wellbore_id: reference [NOT NULL]
+        + bha_type_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + inserted_at: datetime
+        + retrieved_at: datetime
+        + status: string
+        + remarks: text
+        + created_by_employee_id: reference [NOT NULL]
+        + operation: relationship [NOT NULL]
+        + wellbore: relationship [NOT NULL]
+        + bha_type: relationship [NOT NULL]
+        + items: list
+    }
+    class BHAConfigurationItem {
+        + bha_configuration_id: reference [NOT NULL]
+        + sequence_order: integer [NOT NULL]
+        + tool_name: string [NOT NULL]
+        + tool_type: string
+        + outer_diameter: float
+        + length: float
+        + notes: text
+        + bha_configuration: relationship [NOT NULL]
+    }
+    class BHAType {
+        + name: string [NOT NULL]
+        + description: string
+        + is_active: boolean [NOT NULL]
+        + configurations: list
+    }
+    class Casing {
+        + wellbore_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + installed_at: date
+        + description: text
+        + is_current: boolean [NOT NULL]
+        + wellbore: relationship [NOT NULL]
+        + sections: list
+    }
+    class CasingSection {
+        + casing_id: reference [NOT NULL]
+        + section_number: integer [NOT NULL]
+        + top_md: float [NOT NULL]
+        + bottom_md: float [NOT NULL]
+        + outer_diameter: float
+        + weight_per_length: float
+        + grade: string
+        + coupling: string
+        + notes: text
+        + casing: relationship [NOT NULL]
+    }
+    class Company {
+        + name: string [NOT NULL]
+        + country_id: reference
+        + region_id: reference
+        + type: string
+        + is_client: boolean [NOT NULL]
+        + address: string
+        + country: relationship
+        + region: relationship
+        + employees: list
+        + rigs: list
+    }
+    class CostType {
+        + name: string [NOT NULL]
+        + code: string
+        + description: string
+        + is_active: boolean [NOT NULL]
+        + other_costs: list
+    }
+    class Country {
+        + code: string [NOT NULL]
+        + name: string [NOT NULL]
+        + regions: list
+        + companies: list
+        + wells: list
+    }
+    class Currency {
+        + code: string [NOT NULL]
+        + name: string [NOT NULL]
+        + symbol: string
+        + is_base_currency: boolean [NOT NULL]
+        + exchange_rate_to_base: float
+        + deleted_at: datetime
+    }
+    class DailyOtherCost {
+        + daily_report_id: reference [NOT NULL]
+        + cost_type_id: reference [NOT NULL]
+        + company_id: reference [NOT NULL]
+        + cost_local: float [NOT NULL]
+        + local_currency_code: string [NOT NULL]
+        + cost_other_1: float [NOT NULL]
+        + other_currency_1_code: string [NOT NULL]
+        + description: text
+        + daily_report: relationship [NOT NULL]
+        + cost_type: relationship [NOT NULL]
+    }
+    class Employee {
+        + user_id: reference [NOT NULL]
+        + company_id: reference [NOT NULL]
+        + first_name: string [NOT NULL]
+        + last_name: string [NOT NULL]
+        + job_title: string
+        + phone: string
+        + timezone: string
+        + is_active: boolean [NOT NULL]
+        + company: relationship [NOT NULL]
+    }
+    class Equipment {
+        + equipment_type_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + serial_number: string
+        + description: string
+        + owner_company_id: reference [NOT NULL]
+        + is_active: boolean [NOT NULL]
+        + equipment_type: relationship [NOT NULL]
+        + operation_items: list
+        + transfer_items: list
+    }
+    class EquipmentTransfer {
+        + requesting_operation_id: reference [NOT NULL]
+        + from_operation_id: reference
+        + to_operation_id: reference
+        + status: string [NOT NULL]
+        + requested_by_employee_id: reference [NOT NULL]
+        + approved_by_employee_id: reference
+        + requested_at: datetime [NOT NULL]
+        + approved_at: datetime
+        + completed_at: datetime
+        + remarks: text
+        + items: list
+    }
+    class EquipmentTransferItem {
+        + transfer_id: reference [NOT NULL]
+        + equipment_id: reference [NOT NULL]
+        + quantity: float [NOT NULL]
+        + unit: string
+        + transfer: relationship [NOT NULL]
+        + equipment: relationship [NOT NULL]
+    }
+    class EquipmentType {
+        + name: string [NOT NULL]
+        + category: string
+        + description: string
+        + is_active: boolean [NOT NULL]
+        + equipment: list
+    }
+    class InterventionOperation {
+        + well_id: reference [NOT NULL]
+        + wellbore_id: reference [NOT NULL]
+        + operation_type_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + reference_code: string
+        + managing_company_id: reference [NOT NULL]
+        + operating_company_id: reference [NOT NULL]
+        + rig_id: reference [NOT NULL]
+        + projected_start_date: date
+        + projected_spud_date: date
+        + projected_end_date: date
+        + actual_start_date: date
+        + actual_spud_date: date
+        + actual_end_date: date
+        + status: string
+        + well: relationship [NOT NULL]
+        + wellbore: relationship [NOT NULL]
+        + rig: relationship [NOT NULL]
+        + operation_type: relationship [NOT NULL]
+        + phases: list
+        + daily_reports: list
+        + equipment_inventory: list
+        + mud_buckets: list
+        + bha_configurations: list
+        + supervisor_assignments: list
+        + site_visits: list
+        + wellbore_surveys: list
+        + workover_operation: relationship
+        + snubbing_operation: relationship
+    }
+    class LegacyOperation {
+        + well_id: reference [NOT NULL]
+        + wellbore_id: reference [NOT NULL]
+        + operation_type_id: reference
+        + goal: text
+        + summary: text
+        + started_at: date
+        + ended_at: date
+        + well: relationship [NOT NULL]
+        + wellbore: relationship [NOT NULL]
+    }
+    class MudBucket {
+        + operation_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + mud_type: string
+        + density: float
+        + viscosity: float
+        + water_content: float
+        + oil_content: float
+        + volume_current: float
+        + volume_unit: string
+        + status: string
+        + operation: relationship [NOT NULL]
+        + transactions: list
+    }
+    class MudTransaction {
+        + operation_id: reference [NOT NULL]
+        + mud_bucket_id: reference [NOT NULL]
+        + transaction_type: string [NOT NULL]
+        + quantity: float [NOT NULL]
+        + unit: string [NOT NULL]
+        + from_operation_id: reference
+        + to_operation_id: reference
+        + requested_at: datetime
+        + executed_at: datetime [NOT NULL]
+        + recorded_by_employee_id: reference [NOT NULL]
+        + daily_report_id: reference
+        + notes: text
+        + mud_bucket: relationship [NOT NULL]
+        + daily_report: relationship
+    }
+    class OperationDailyReport {
+        + operation_id: reference [NOT NULL]
+        + report_date: date [NOT NULL]
+        + status: text
+        + day_summary: text
+        + after_midnight_summary: text
+        + early_nextday_summary: text
+        + general_remarks: text
+        + created_by_employee_id: reference [NOT NULL]
+        + operation: relationship [NOT NULL]
+        + activities: list
+        + other_costs: list
+        + mud_transactions: list
+    }
+    class OperationEquipment {
+        + operation_id: reference [NOT NULL]
+        + equipment_id: reference [NOT NULL]
+        + quantity: float [NOT NULL]
+        + unit: string [NOT NULL]
+        + status: string
+        + operation: relationship [NOT NULL]
+        + equipment: relationship [NOT NULL]
+    }
+    class OperationPhase {
+        + operation_id: reference [NOT NULL]
+        + phase_type_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + sequence_order: integer [NOT NULL]
+        + objective: text
+        + planned_start_date: date
+        + planned_end_date: date
+        + actual_start_date: date
+        + actual_end_date: date
+        + is_active: boolean [NOT NULL]
+        + operation: relationship [NOT NULL]
+        + phase_type: relationship [NOT NULL]
+        + activities: list
+    }
+    class OperationPhaseType {
+        + name: string [NOT NULL]
+        + code: string
+        + description: string
+        + is_active: boolean [NOT NULL]
+        + phases: list
+    }
+    class OperationType {
+        + code: string [NOT NULL]
+        + name: string [NOT NULL]
+        + description: string
+        + is_active: boolean [NOT NULL]
+    }
+    class OperationalActivity {
+        + operation_id: reference [NOT NULL]
+        + daily_report_id: reference [NOT NULL]
+        + phase_id: reference [NOT NULL]
+        + activity_date: date [NOT NULL]
+        + summary: text [NOT NULL]
+        + carry_over: boolean [NOT NULL]
+        + start_time: datetime [NOT NULL]
+        + end_time: datetime [NOT NULL]
+        + start_md: float
+        + end_md: float
+        + company_id: reference
+        + t_value: string [NOT NULL]
+        + npt_duration_minutes: integer
+        + npt_company_id: reference
+        + problem_level: string
+        + cost_value: float [NOT NULL]
+        + cost_currency_code: string [NOT NULL]
+        + created_by_employee_id: reference
+        + daily_report: relationship [NOT NULL]
+        + phase: relationship [NOT NULL]
+    }
+    class Region {
+        + country_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + code: string
+        + country: relationship [NOT NULL]
+        + companies: list
+        + wells: list
+        + regional_manager_assignments: list
+        + superintendent_assignments: list
+    }
+    class RegionalManagerAssignment {
+        + manager_employee_id: reference [NOT NULL]
+        + region_id: reference [NOT NULL]
+        + is_active: boolean [NOT NULL]
+        + assigned_at: datetime [NOT NULL]
+        + unassigned_at: datetime
+        + region: relationship [NOT NULL]
+    }
+    class Rig {
+        + name: string [NOT NULL]
+        + rig_code: string
+        + owner_company_id: reference [NOT NULL]
+        + rig_type: string
+        + max_hook_load: float
+        + max_depth: float
+        + horsepower: integer
+        + mast_height: float
+        + bop_rated_pressure: float
+        + accommodation_capacity: integer
+        + status: string
+        + cost_t1_per_hour: float
+        + cost_t2_per_hour: float
+        + cost_t3_per_hour: float
+        + cost_t4_per_hour: float
+        + currency_code: string
+        + owner_company: relationship [NOT NULL]
+        + operations: list
+    }
+    class SiteVisit {
+        + operation_id: reference [NOT NULL]
+        + visitor_type: string [NOT NULL]
+        + visitor_name: string [NOT NULL]
+        + company_id: reference
+        + headcount: integer
+        + check_in_at: datetime [NOT NULL]
+        + check_out_at: datetime
+        + purpose: text
+        + recorded_by_employee_id: reference [NOT NULL]
+        + operation: relationship [NOT NULL]
+    }
+    class SnubbingOperation {
+        + operation_id: reference [NOT NULL]
+        + snubbing_unit_size: string
+        + max_pressure_rating: float
+        + notes: text
+        + operation: relationship [NOT NULL]
+    }
+    class SuperintendentRegionAssignment {
+        + superintendent_employee_id: reference [NOT NULL]
+        + region_id: reference [NOT NULL]
+        + operation_type_id: reference
+        + is_active: boolean [NOT NULL]
+        + assigned_at: datetime [NOT NULL]
+        + unassigned_at: datetime
+        + region: relationship [NOT NULL]
+    }
+    class SupervisorAssignment {
+        + operation_id: reference [NOT NULL]
+        + supervisor_employee_id: reference [NOT NULL]
+        + superintendent_employee_id: reference
+        + status: string [NOT NULL]
+        + assigned_at: datetime [NOT NULL]
+        + removed_at: datetime
+        + frozen_at: datetime
+        + unfrozen_at: datetime
+        + notes: text
+        + operation: relationship [NOT NULL]
+    }
+    class User
+    class Well {
+        + name: string [NOT NULL]
+        + external_id: string
+        + country_id: reference [NOT NULL]
+        + region_id: reference [NOT NULL]
+        + field_name: string
+        + latitude: float
+        + longitude: float
+        + status: string
+        + operator_company_id: reference
+        + country: relationship [NOT NULL]
+        + region: relationship [NOT NULL]
+        + wellbores: list
+        + legacy_operations: list
+        + operations: list
+    }
+    class Wellbore {
+        + well_id: reference [NOT NULL]
+        + name: string [NOT NULL]
+        + wellbore_code: string
+        + sidetrack_number: integer
+        + type: string
+        + kickoff_date: date
+        + total_depth_md: float
+        + total_depth_tvd: float
+        + status: string
+        + well: relationship [NOT NULL]
+        + legacy_operations: list
+        + operations: list
+        + casings: list
+        + surveys: list
+        + bha_configurations: list
+    }
+    class WellboreSurvey {
+        + wellbore_id: reference [NOT NULL]
+        + operation_id: reference
+        + survey_date: date [NOT NULL]
+        + measured_depth: float [NOT NULL]
+        + true_vertical_depth: float
+        + inclination: float
+        + azimuth: float
+        + tool: string
+        + remarks: text
+        + wellbore: relationship [NOT NULL]
+        + operation: relationship
+    }
+    class WorkoverOperation {
+        + operation_id: reference [NOT NULL]
+        + workover_objective: text
+        + planned_tubing_size: string
+        + planned_completion_type: string
+        + notes: text
+        + operation: relationship [NOT NULL]
+    }
+    Country "1" --> "*" Region : regions list Region back=country
+    Country "1" --> "*" Company : companies list Company back=country
+    Country "1" --> "*" Well : wells list Well back=country
+    Region --> Country : country_id ref countries.id !
+    Region --> Country : country rel Country ! back=regions
+    Region "1" --> "*" Company : companies list Company back=region
+    Region "1" --> "*" Well : wells list Well back=region
+    Region "1" --> "*" RegionalManagerAssignment : regional_manager_assignments list RegionalManagerAssignment back=region
+    Region "1" --> "*" SuperintendentRegionAssignment : superintendent_assignments list SuperintendentRegionAssignment back=region
+    Company --> Country : country_id ref countries.id
+    Company --> Region : region_id ref regions.id
+    Company --> Country : country rel Country back=companies
+    Company --> Region : region rel Region back=companies
+    Company "1" --> "*" Employee : employees list Employee back=company
+    Company "1" --> "*" Rig : rigs list Rig back=owner_company
+    Employee --> User : user_id ref users.id !
+    Employee --> Company : company_id ref companies.id !
+    Employee --> Company : company rel Company ! back=employees
+    Well --> Country : country_id ref countries.id !
+    Well --> Region : region_id ref regions.id !
+    Well --> Company : operator_company_id ref companies.id
+    Well --> Country : country rel Country ! back=wells
+    Well --> Region : region rel Region ! back=wells
+    Well "1" --> "*" Wellbore : wellbores list Wellbore back=well
+    Well "1" --> "*" LegacyOperation : legacy_operations list LegacyOperation back=well
+    Well "1" --> "*" InterventionOperation : operations list InterventionOperation back=well
+    Wellbore --> Well : well_id ref wells.id !
+    Wellbore --> Well : well rel Well ! back=wellbores
+    Wellbore "1" --> "*" LegacyOperation : legacy_operations list LegacyOperation back=wellbore
+    Wellbore "1" --> "*" InterventionOperation : operations list InterventionOperation back=wellbore
+    Wellbore "1" --> "*" Casing : casings list Casing back=wellbore
+    Wellbore "1" --> "*" WellboreSurvey : surveys list WellboreSurvey back=wellbore
+    Wellbore "1" --> "*" BHAConfiguration : bha_configurations list BHAConfiguration back=wellbore
+    LegacyOperation --> Well : well_id ref wells.id !
+    LegacyOperation --> Wellbore : wellbore_id ref wellbores.id !
+    LegacyOperation --> OperationType : operation_type_id ref operation_types.id
+    LegacyOperation --> Well : well rel Well ! back=legacy_operations
+    LegacyOperation --> Wellbore : wellbore rel Wellbore ! back=legacy_operations
+    Rig --> Company : owner_company_id ref companies.id !
+    Rig --> Company : owner_company rel Company ! back=rigs
+    Rig "1" --> "*" InterventionOperation : operations list InterventionOperation back=rig
+    EquipmentType "1" --> "*" Equipment : equipment list Equipment back=equipment_type
+    Equipment --> EquipmentType : equipment_type_id ref equipment_types.id !
+    Equipment --> Company : owner_company_id ref companies.id !
+    Equipment --> EquipmentType : equipment_type rel EquipmentType ! back=equipment
+    Equipment "1" --> "*" OperationEquipment : operation_items list OperationEquipment back=equipment
+    Equipment "1" --> "*" EquipmentTransferItem : transfer_items list EquipmentTransferItem back=equipment
+    OperationEquipment --> InterventionOperation : operation_id ref intervention_operations.id !
+    OperationEquipment --> Equipment : equipment_id ref equipment.id !
+    OperationEquipment --> InterventionOperation : operation rel InterventionOperation ! back=equipment_inventory
+    OperationEquipment --> Equipment : equipment rel Equipment ! back=operation_items
+    EquipmentTransfer --> InterventionOperation : requesting_operation_id ref intervention_operations.id !
+    EquipmentTransfer --> InterventionOperation : from_operation_id ref intervention_operations.id
+    EquipmentTransfer --> InterventionOperation : to_operation_id ref intervention_operations.id
+    EquipmentTransfer --> Employee : requested_by_employee_id ref employees.id !
+    EquipmentTransfer --> Employee : approved_by_employee_id ref employees.id
+    EquipmentTransfer "1" --> "*" EquipmentTransferItem : items list EquipmentTransferItem back=transfer
+    EquipmentTransferItem --> EquipmentTransfer : transfer_id ref equipment_transfers.id !
+    EquipmentTransferItem --> Equipment : equipment_id ref equipment.id !
+    EquipmentTransferItem --> EquipmentTransfer : transfer rel EquipmentTransfer ! back=items
+    EquipmentTransferItem --> Equipment : equipment rel Equipment ! back=transfer_items
+    InterventionOperation --> Well : well_id ref wells.id !
+    InterventionOperation --> Wellbore : wellbore_id ref wellbores.id !
+    InterventionOperation --> OperationType : operation_type_id ref operation_types.id !
+    InterventionOperation --> Company : managing_company_id ref companies.id !
+    InterventionOperation --> Company : operating_company_id ref companies.id !
+    InterventionOperation --> Rig : rig_id ref rigs.id !
+    InterventionOperation --> Well : well rel Well ! back=operations
+    InterventionOperation --> Wellbore : wellbore rel Wellbore ! back=operations
+    InterventionOperation --> Rig : rig rel Rig ! back=operations
+    InterventionOperation --> OperationType : operation_type rel OperationType !
+    InterventionOperation "1" --> "*" OperationPhase : phases list OperationPhase back=operation
+    InterventionOperation "1" --> "*" OperationDailyReport : daily_reports list OperationDailyReport back=operation
+    InterventionOperation "1" --> "*" OperationEquipment : equipment_inventory list OperationEquipment back=operation
+    InterventionOperation "1" --> "*" MudBucket : mud_buckets list MudBucket back=operation
+    InterventionOperation "1" --> "*" BHAConfiguration : bha_configurations list BHAConfiguration back=operation
+    InterventionOperation "1" --> "*" SupervisorAssignment : supervisor_assignments list SupervisorAssignment back=operation
+    InterventionOperation "1" --> "*" SiteVisit : site_visits list SiteVisit back=operation
+    InterventionOperation "1" --> "*" WellboreSurvey : wellbore_surveys list WellboreSurvey back=operation
+    InterventionOperation --> WorkoverOperation : workover_operation rel WorkoverOperation back=operation
+    InterventionOperation --> SnubbingOperation : snubbing_operation rel SnubbingOperation back=operation
+    WorkoverOperation --> InterventionOperation : operation_id ref intervention_operations.id !
+    WorkoverOperation --> InterventionOperation : operation rel InterventionOperation ! back=workover_operation
+    SnubbingOperation --> InterventionOperation : operation_id ref intervention_operations.id !
+    SnubbingOperation --> InterventionOperation : operation rel InterventionOperation ! back=snubbing_operation
+    OperationPhaseType "1" --> "*" OperationPhase : phases list OperationPhase back=phase_type
+    OperationPhase --> InterventionOperation : operation_id ref intervention_operations.id !
+    OperationPhase --> OperationPhaseType : phase_type_id ref operation_phase_types.id !
+    OperationPhase --> InterventionOperation : operation rel InterventionOperation ! back=phases
+    OperationPhase --> OperationPhaseType : phase_type rel OperationPhaseType ! back=phases
+    OperationPhase "1" --> "*" OperationalActivity : activities list OperationalActivity back=phase
+    OperationDailyReport --> InterventionOperation : operation_id ref intervention_operations.id !
+    OperationDailyReport --> Employee : created_by_employee_id ref employees.id !
+    OperationDailyReport --> InterventionOperation : operation rel InterventionOperation ! back=daily_reports
+    OperationDailyReport "1" --> "*" OperationalActivity : activities list OperationalActivity back=daily_report
+    OperationDailyReport "1" --> "*" DailyOtherCost : other_costs list DailyOtherCost back=daily_report
+    OperationDailyReport "1" --> "*" MudTransaction : mud_transactions list MudTransaction back=daily_report
+    OperationalActivity --> InterventionOperation : operation_id ref intervention_operations.id !
+    OperationalActivity --> OperationDailyReport : daily_report_id ref operation_daily_reports.id !
+    OperationalActivity --> OperationPhase : phase_id ref operation_phases.id !
+    OperationalActivity --> Company : company_id ref companies.id
+    OperationalActivity --> Company : npt_company_id ref companies.id
+    OperationalActivity --> Employee : created_by_employee_id ref employees.id
+    OperationalActivity --> OperationDailyReport : daily_report rel OperationDailyReport ! back=activities
+    OperationalActivity --> OperationPhase : phase rel OperationPhase ! back=activities
+    CostType "1" --> "*" DailyOtherCost : other_costs list DailyOtherCost back=cost_type
+    DailyOtherCost --> OperationDailyReport : daily_report_id ref operation_daily_reports.id !
+    DailyOtherCost --> CostType : cost_type_id ref cost_types.id !
+    DailyOtherCost --> Company : company_id ref companies.id !
+    DailyOtherCost --> OperationDailyReport : daily_report rel OperationDailyReport ! back=other_costs
+    DailyOtherCost --> CostType : cost_type rel CostType ! back=other_costs
+    MudBucket --> InterventionOperation : operation_id ref intervention_operations.id !
+    MudBucket --> InterventionOperation : operation rel InterventionOperation ! back=mud_buckets
+    MudBucket "1" --> "*" MudTransaction : transactions list MudTransaction back=mud_bucket
+    MudTransaction --> InterventionOperation : operation_id ref intervention_operations.id !
+    MudTransaction --> MudBucket : mud_bucket_id ref mud_buckets.id !
+    MudTransaction --> InterventionOperation : from_operation_id ref intervention_operations.id
+    MudTransaction --> InterventionOperation : to_operation_id ref intervention_operations.id
+    MudTransaction --> Employee : recorded_by_employee_id ref employees.id !
+    MudTransaction --> OperationDailyReport : daily_report_id ref operation_daily_reports.id
+    MudTransaction --> MudBucket : mud_bucket rel MudBucket ! back=transactions
+    MudTransaction --> OperationDailyReport : daily_report rel OperationDailyReport back=mud_transactions
+    BHAType "1" --> "*" BHAConfiguration : configurations list BHAConfiguration back=bha_type
+    BHAConfiguration --> InterventionOperation : operation_id ref intervention_operations.id !
+    BHAConfiguration --> Wellbore : wellbore_id ref wellbores.id !
+    BHAConfiguration --> BHAType : bha_type_id ref bha_types.id !
+    BHAConfiguration --> Employee : created_by_employee_id ref employees.id !
+    BHAConfiguration --> InterventionOperation : operation rel InterventionOperation ! back=bha_configurations
+    BHAConfiguration --> Wellbore : wellbore rel Wellbore ! back=bha_configurations
+    BHAConfiguration --> BHAType : bha_type rel BHAType ! back=configurations
+    BHAConfiguration "1" --> "*" BHAConfigurationItem : items list BHAConfigurationItem back=bha_configuration
+    BHAConfigurationItem --> BHAConfiguration : bha_configuration_id ref bha_configurations.id !
+    BHAConfigurationItem --> BHAConfiguration : bha_configuration rel BHAConfiguration ! back=items
+    Casing --> Wellbore : wellbore_id ref wellbores.id !
+    Casing --> Wellbore : wellbore rel Wellbore ! back=casings
+    Casing "1" --> "*" CasingSection : sections list CasingSection back=casing
+    CasingSection --> Casing : casing_id ref casings.id !
+    CasingSection --> Casing : casing rel Casing ! back=sections
+    SiteVisit --> InterventionOperation : operation_id ref intervention_operations.id !
+    SiteVisit --> Company : company_id ref companies.id
+    SiteVisit --> Employee : recorded_by_employee_id ref employees.id !
+    SiteVisit --> InterventionOperation : operation rel InterventionOperation ! back=site_visits
+    SupervisorAssignment --> InterventionOperation : operation_id ref intervention_operations.id !
+    SupervisorAssignment --> Employee : supervisor_employee_id ref employees.id !
+    SupervisorAssignment --> Employee : superintendent_employee_id ref employees.id
+    SupervisorAssignment --> InterventionOperation : operation rel InterventionOperation ! back=supervisor_assignments
+    SuperintendentRegionAssignment --> Employee : superintendent_employee_id ref employees.id !
+    SuperintendentRegionAssignment --> Region : region_id ref regions.id !
+    SuperintendentRegionAssignment --> OperationType : operation_type_id ref operation_types.id
+    SuperintendentRegionAssignment --> Region : region rel Region ! back=superintendent_assignments
+    RegionalManagerAssignment --> Employee : manager_employee_id ref employees.id !
+    RegionalManagerAssignment --> Region : region_id ref regions.id !
+    RegionalManagerAssignment --> Region : region rel Region ! back=regional_manager_assignments
+    WellboreSurvey --> Wellbore : wellbore_id ref wellbores.id !
+    WellboreSurvey --> InterventionOperation : operation_id ref intervention_operations.id
+    WellboreSurvey --> Wellbore : wellbore rel Wellbore ! back=surveys
+    WellboreSurvey --> InterventionOperation : operation rel InterventionOperation back=wellbore_surveys
+    </div>
+  </div>
+</body>
+</html>

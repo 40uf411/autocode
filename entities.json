@@ -1,33 +1,2262 @@
 [
-  {
-    "name": "Country",
-    "table": "countries",
-    "attributes": [
-      {"name": "id", "type": "uuid", "primary_key": true, "nullable": false},
-      {"name": "code", "type": "string", "nullable": false, "length": 3},
-      {"name": "name", "type": "string", "nullable": false}
-    ]
-  },
-  {
-    "name": "Equipment",
-    "table": "equipment",
-    "attributes": [
-      {"name": "id", "type": "uuid", "primary_key": true, "nullable": false},
-      {"name": "serial_number", "type": "string", "nullable": false},
-      {"name": "type", "type": "string", "nullable": false},
-      {"name": "country_id", "type": "reference", "target": "countries.id", "nullable": false},
-      {"name": "owner_id", "type": "reference", "target": "employees.id", "nullable": true},
-      {"name": "owner", "type": "relationship", "target": "Employee", "back_populates": "assigned_equipment", "nullable": true}
-    ]
-  },
-  {
-    "name": "Employee",
-    "table": "employees",
-    "attributes": [
-      {"name": "id", "type": "uuid", "primary_key": true, "nullable": false},
-      {"name": "user_id", "type": "reference", "target": "users.id", "nullable": false},
-      {"name": "country_id", "type": "reference", "target": "countries.id", "nullable": true},
-      {"name": "assigned_equipment", "type": "list", "target": "Equipment", "back_populates": "owner"}
-    ]
-  }
+    {
+        "name": "Country",
+        "table": "countries",
+        "attributes": [
+            {
+                "name": "code",
+                "type": "string",
+                "nullable": false,
+                "length": 3
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "regions",
+                "type": "list",
+                "target": "Region",
+                "back_populates": "country"
+            },
+            {
+                "name": "companies",
+                "type": "list",
+                "target": "Company",
+                "back_populates": "country"
+            },
+            {
+                "name": "wells",
+                "type": "list",
+                "target": "Well",
+                "back_populates": "country"
+            }
+        ]
+    },
+    {
+        "name": "Region",
+        "table": "regions",
+        "attributes": [
+            {
+                "name": "country_id",
+                "type": "reference",
+                "target": "countries.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "code",
+                "type": "string",
+                "nullable": true,
+                "length": 20
+            },
+            {
+                "name": "country",
+                "type": "relationship",
+                "target": "Country",
+                "back_populates": "regions",
+                "nullable": false
+            },
+            {
+                "name": "companies",
+                "type": "list",
+                "target": "Company",
+                "back_populates": "region"
+            },
+            {
+                "name": "wells",
+                "type": "list",
+                "target": "Well",
+                "back_populates": "region"
+            },
+            {
+                "name": "regional_manager_assignments",
+                "type": "list",
+                "target": "RegionalManagerAssignment",
+                "back_populates": "region"
+            },
+            {
+                "name": "superintendent_assignments",
+                "type": "list",
+                "target": "SuperintendentRegionAssignment",
+                "back_populates": "region"
+            }
+        ]
+    },
+    {
+        "name": "Company",
+        "table": "companies",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 255
+            },
+            {
+                "name": "country_id",
+                "type": "reference",
+                "target": "countries.id",
+                "nullable": true
+            },
+            {
+                "name": "region_id",
+                "type": "reference",
+                "target": "regions.id",
+                "nullable": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "is_client",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "address",
+                "type": "string",
+                "nullable": true,
+                "length": 255
+            },
+            {
+                "name": "country",
+                "type": "relationship",
+                "target": "Country",
+                "back_populates": "companies",
+                "nullable": true
+            },
+            {
+                "name": "region",
+                "type": "relationship",
+                "target": "Region",
+                "back_populates": "companies",
+                "nullable": true
+            },
+            {
+                "name": "employees",
+                "type": "list",
+                "target": "Employee",
+                "back_populates": "company"
+            },
+            {
+                "name": "rigs",
+                "type": "list",
+                "target": "Rig",
+                "back_populates": "owner_company"
+            }
+        ]
+    },
+    {
+        "name": "Employee",
+        "table": "employees",
+        "attributes": [
+            {
+                "name": "user_id",
+                "type": "reference",
+                "target": "users.id",
+                "nullable": false
+            },
+            {
+                "name": "company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": false
+            },
+            {
+                "name": "first_name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "last_name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "job_title",
+                "type": "string",
+                "nullable": true,
+                "length": 100
+            },
+            {
+                "name": "phone",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "timezone",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "company",
+                "type": "relationship",
+                "target": "Company",
+                "back_populates": "employees",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "OperationType",
+        "table": "operation_types",
+        "attributes": [
+            {
+                "name": "code",
+                "type": "string",
+                "nullable": false,
+                "length": 20
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "nullable": true,
+                "length": 255
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "Well",
+        "table": "wells",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "external_id",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "country_id",
+                "type": "reference",
+                "target": "countries.id",
+                "nullable": false
+            },
+            {
+                "name": "region_id",
+                "type": "reference",
+                "target": "regions.id",
+                "nullable": false
+            },
+            {
+                "name": "field_name",
+                "type": "string",
+                "nullable": true,
+                "length": 100
+            },
+            {
+                "name": "latitude",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "longitude",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "operator_company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": true
+            },
+            {
+                "name": "country",
+                "type": "relationship",
+                "target": "Country",
+                "back_populates": "wells",
+                "nullable": false
+            },
+            {
+                "name": "region",
+                "type": "relationship",
+                "target": "Region",
+                "back_populates": "wells",
+                "nullable": false
+            },
+            {
+                "name": "wellbores",
+                "type": "list",
+                "target": "Wellbore",
+                "back_populates": "well"
+            },
+            {
+                "name": "legacy_operations",
+                "type": "list",
+                "target": "LegacyOperation",
+                "back_populates": "well"
+            },
+            {
+                "name": "operations",
+                "type": "list",
+                "target": "InterventionOperation",
+                "back_populates": "well"
+            }
+        ]
+    },
+    {
+        "name": "Wellbore",
+        "table": "wellbores",
+        "attributes": [
+            {
+                "name": "well_id",
+                "type": "reference",
+                "target": "wells.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "wellbore_code",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "sidetrack_number",
+                "type": "integer",
+                "nullable": true
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "kickoff_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "total_depth_md",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "total_depth_tvd",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "well",
+                "type": "relationship",
+                "target": "Well",
+                "back_populates": "wellbores",
+                "nullable": false
+            },
+            {
+                "name": "legacy_operations",
+                "type": "list",
+                "target": "LegacyOperation",
+                "back_populates": "wellbore"
+            },
+            {
+                "name": "operations",
+                "type": "list",
+                "target": "InterventionOperation",
+                "back_populates": "wellbore"
+            },
+            {
+                "name": "casings",
+                "type": "list",
+                "target": "Casing",
+                "back_populates": "wellbore"
+            },
+            {
+                "name": "surveys",
+                "type": "list",
+                "target": "WellboreSurvey",
+                "back_populates": "wellbore"
+            },
+            {
+                "name": "bha_configurations",
+                "type": "list",
+                "target": "BHAConfiguration",
+                "back_populates": "wellbore"
+            }
+        ]
+    },
+    {
+        "name": "LegacyOperation",
+        "table": "legacy_operations",
+        "attributes": [
+            {
+                "name": "well_id",
+                "type": "reference",
+                "target": "wells.id",
+                "nullable": false
+            },
+            {
+                "name": "wellbore_id",
+                "type": "reference",
+                "target": "wellbores.id",
+                "nullable": false
+            },
+            {
+                "name": "operation_type_id",
+                "type": "reference",
+                "target": "operation_types.id",
+                "nullable": true
+            },
+            {
+                "name": "goal",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "summary",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "started_at",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "ended_at",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "well",
+                "type": "relationship",
+                "target": "Well",
+                "back_populates": "legacy_operations",
+                "nullable": false
+            },
+            {
+                "name": "wellbore",
+                "type": "relationship",
+                "target": "Wellbore",
+                "back_populates": "legacy_operations",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "Rig",
+        "table": "rigs",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "rig_code",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "owner_company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": false
+            },
+            {
+                "name": "rig_type",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "max_hook_load",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "max_depth",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "horsepower",
+                "type": "integer",
+                "nullable": true
+            },
+            {
+                "name": "mast_height",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "bop_rated_pressure",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "accommodation_capacity",
+                "type": "integer",
+                "nullable": true
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "cost_t1_per_hour",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "cost_t2_per_hour",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "cost_t3_per_hour",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "cost_t4_per_hour",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "currency_code",
+                "type": "string",
+                "nullable": true,
+                "length": 3
+            },
+            {
+                "name": "owner_company",
+                "type": "relationship",
+                "target": "Company",
+                "back_populates": "rigs",
+                "nullable": false
+            },
+            {
+                "name": "operations",
+                "type": "list",
+                "target": "InterventionOperation",
+                "back_populates": "rig"
+            }
+        ]
+    },
+    {
+        "name": "EquipmentType",
+        "table": "equipment_types",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "category",
+                "type": "string",
+                "nullable": true,
+                "length": 100
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "nullable": true,
+                "length": 255
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "equipment",
+                "type": "list",
+                "target": "Equipment",
+                "back_populates": "equipment_type"
+            }
+        ]
+    },
+    {
+        "name": "Equipment",
+        "table": "equipment",
+        "attributes": [
+            {
+                "name": "equipment_type_id",
+                "type": "reference",
+                "target": "equipment_types.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "serial_number",
+                "type": "string",
+                "nullable": true,
+                "length": 100
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "nullable": true,
+                "length": 255
+            },
+            {
+                "name": "owner_company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": false
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "equipment_type",
+                "type": "relationship",
+                "target": "EquipmentType",
+                "back_populates": "equipment",
+                "nullable": false
+            },
+            {
+                "name": "operation_items",
+                "type": "list",
+                "target": "OperationEquipment",
+                "back_populates": "equipment"
+            },
+            {
+                "name": "transfer_items",
+                "type": "list",
+                "target": "EquipmentTransferItem",
+                "back_populates": "equipment"
+            }
+        ]
+    },
+    {
+        "name": "OperationEquipment",
+        "table": "operation_equipment",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "equipment_id",
+                "type": "reference",
+                "target": "equipment.id",
+                "nullable": false
+            },
+            {
+                "name": "quantity",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "unit",
+                "type": "string",
+                "nullable": false,
+                "length": 20
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": true,
+                "length": 20
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "equipment_inventory",
+                "nullable": false
+            },
+            {
+                "name": "equipment",
+                "type": "relationship",
+                "target": "Equipment",
+                "back_populates": "operation_items",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "EquipmentTransfer",
+        "table": "equipment_transfers",
+        "attributes": [
+            {
+                "name": "requesting_operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "from_operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": true
+            },
+            {
+                "name": "to_operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": true
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": false,
+                "length": 20
+            },
+            {
+                "name": "requested_by_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "approved_by_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": true
+            },
+            {
+                "name": "requested_at",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "approved_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "completed_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "remarks",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "items",
+                "type": "list",
+                "target": "EquipmentTransferItem",
+                "back_populates": "transfer"
+            }
+        ]
+    },
+    {
+        "name": "EquipmentTransferItem",
+        "table": "equipment_transfer_items",
+        "attributes": [
+            {
+                "name": "transfer_id",
+                "type": "reference",
+                "target": "equipment_transfers.id",
+                "nullable": false
+            },
+            {
+                "name": "equipment_id",
+                "type": "reference",
+                "target": "equipment.id",
+                "nullable": false
+            },
+            {
+                "name": "quantity",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "unit",
+                "type": "string",
+                "nullable": true,
+                "length": 20
+            },
+            {
+                "name": "transfer",
+                "type": "relationship",
+                "target": "EquipmentTransfer",
+                "back_populates": "items",
+                "nullable": false
+            },
+            {
+                "name": "equipment",
+                "type": "relationship",
+                "target": "Equipment",
+                "back_populates": "transfer_items",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "InterventionOperation",
+        "table": "intervention_operations",
+        "attributes": [
+            {
+                "name": "well_id",
+                "type": "reference",
+                "target": "wells.id",
+                "nullable": false
+            },
+            {
+                "name": "wellbore_id",
+                "type": "reference",
+                "target": "wellbores.id",
+                "nullable": false
+            },
+            {
+                "name": "operation_type_id",
+                "type": "reference",
+                "target": "operation_types.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "reference_code",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "managing_company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": false
+            },
+            {
+                "name": "operating_company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": false
+            },
+            {
+                "name": "rig_id",
+                "type": "reference",
+                "target": "rigs.id",
+                "nullable": false
+            },
+            {
+                "name": "projected_start_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "projected_spud_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "projected_end_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "actual_start_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "actual_spud_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "actual_end_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "well",
+                "type": "relationship",
+                "target": "Well",
+                "back_populates": "operations",
+                "nullable": false
+            },
+            {
+                "name": "wellbore",
+                "type": "relationship",
+                "target": "Wellbore",
+                "back_populates": "operations",
+                "nullable": false
+            },
+            {
+                "name": "rig",
+                "type": "relationship",
+                "target": "Rig",
+                "back_populates": "operations",
+                "nullable": false
+            },
+            {
+                "name": "operation_type",
+                "type": "relationship",
+                "target": "OperationType",
+                "nullable": false
+            },
+            {
+                "name": "phases",
+                "type": "list",
+                "target": "OperationPhase",
+                "back_populates": "operation"
+            },
+            {
+                "name": "daily_reports",
+                "type": "list",
+                "target": "OperationDailyReport",
+                "back_populates": "operation"
+            },
+            {
+                "name": "equipment_inventory",
+                "type": "list",
+                "target": "OperationEquipment",
+                "back_populates": "operation"
+            },
+            {
+                "name": "mud_buckets",
+                "type": "list",
+                "target": "MudBucket",
+                "back_populates": "operation"
+            },
+            {
+                "name": "bha_configurations",
+                "type": "list",
+                "target": "BHAConfiguration",
+                "back_populates": "operation"
+            },
+            {
+                "name": "supervisor_assignments",
+                "type": "list",
+                "target": "SupervisorAssignment",
+                "back_populates": "operation"
+            },
+            {
+                "name": "site_visits",
+                "type": "list",
+                "target": "SiteVisit",
+                "back_populates": "operation"
+            },
+            {
+                "name": "wellbore_surveys",
+                "type": "list",
+                "target": "WellboreSurvey",
+                "back_populates": "operation"
+            },
+            {
+                "name": "workover_operation",
+                "type": "relationship",
+                "target": "WorkoverOperation",
+                "back_populates": "operation",
+                "nullable": true
+            },
+            {
+                "name": "snubbing_operation",
+                "type": "relationship",
+                "target": "SnubbingOperation",
+                "back_populates": "operation",
+                "nullable": true
+            }
+        ]
+    },
+    {
+        "name": "WorkoverOperation",
+        "table": "workover_operations",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "workover_objective",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "planned_tubing_size",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "planned_completion_type",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "notes",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "workover_operation",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "SnubbingOperation",
+        "table": "snubbing_operations",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "snubbing_unit_size",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "max_pressure_rating",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "notes",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "snubbing_operation",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "OperationPhaseType",
+        "table": "operation_phase_types",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "code",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "nullable": true,
+                "length": 255
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "phases",
+                "type": "list",
+                "target": "OperationPhase",
+                "back_populates": "phase_type"
+            }
+        ]
+    },
+    {
+        "name": "OperationPhase",
+        "table": "operation_phases",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "phase_type_id",
+                "type": "reference",
+                "target": "operation_phase_types.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "sequence_order",
+                "type": "integer",
+                "nullable": false
+            },
+            {
+                "name": "objective",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "planned_start_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "planned_end_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "actual_start_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "actual_end_date",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "phases",
+                "nullable": false
+            },
+            {
+                "name": "phase_type",
+                "type": "relationship",
+                "target": "OperationPhaseType",
+                "back_populates": "phases",
+                "nullable": false
+            },
+            {
+                "name": "activities",
+                "type": "list",
+                "target": "OperationalActivity",
+                "back_populates": "phase"
+            }
+        ]
+    },
+    {
+        "name": "OperationDailyReport",
+        "table": "operation_daily_reports",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "report_date",
+                "type": "date",
+                "nullable": false
+            },
+            {
+                "name": "status",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "day_summary",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "after_midnight_summary",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "early_nextday_summary",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "general_remarks",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "created_by_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "daily_reports",
+                "nullable": false
+            },
+            {
+                "name": "activities",
+                "type": "list",
+                "target": "OperationalActivity",
+                "back_populates": "daily_report"
+            },
+            {
+                "name": "other_costs",
+                "type": "list",
+                "target": "DailyOtherCost",
+                "back_populates": "daily_report"
+            },
+            {
+                "name": "mud_transactions",
+                "type": "list",
+                "target": "MudTransaction",
+                "back_populates": "daily_report"
+            }
+        ]
+    },
+    {
+        "name": "OperationalActivity",
+        "table": "operational_activities",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "daily_report_id",
+                "type": "reference",
+                "target": "operation_daily_reports.id",
+                "nullable": false
+            },
+            {
+                "name": "phase_id",
+                "type": "reference",
+                "target": "operation_phases.id",
+                "nullable": false
+            },
+            {
+                "name": "activity_date",
+                "type": "date",
+                "nullable": false
+            },
+            {
+                "name": "summary",
+                "type": "text",
+                "nullable": false
+            },
+            {
+                "name": "carry_over",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "start_time",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "end_time",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "start_md",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "end_md",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": true
+            },
+            {
+                "name": "t_value",
+                "type": "string",
+                "nullable": false,
+                "length": 2
+            },
+            {
+                "name": "npt_duration_minutes",
+                "type": "integer",
+                "nullable": true
+            },
+            {
+                "name": "npt_company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": true
+            },
+            {
+                "name": "problem_level",
+                "type": "string",
+                "nullable": true,
+                "length": 20
+            },
+            {
+                "name": "cost_value",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "cost_currency_code",
+                "type": "string",
+                "nullable": false,
+                "length": 3
+            },
+            {
+                "name": "created_by_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": true
+            },
+            {
+                "name": "daily_report",
+                "type": "relationship",
+                "target": "OperationDailyReport",
+                "back_populates": "activities",
+                "nullable": false
+            },
+            {
+                "name": "phase",
+                "type": "relationship",
+                "target": "OperationPhase",
+                "back_populates": "activities",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "CostType",
+        "table": "cost_types",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "code",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "nullable": true,
+                "length": 255
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "other_costs",
+                "type": "list",
+                "target": "DailyOtherCost",
+                "back_populates": "cost_type"
+            }
+        ]
+    },
+    {
+        "name": "DailyOtherCost",
+        "table": "daily_other_costs",
+        "attributes": [
+            {
+                "name": "daily_report_id",
+                "type": "reference",
+                "target": "operation_daily_reports.id",
+                "nullable": false
+            },
+            {
+                "name": "cost_type_id",
+                "type": "reference",
+                "target": "cost_types.id",
+                "nullable": false
+            },
+            {
+                "name": "company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": false
+            },
+            {
+                "name": "cost_local",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "local_currency_code",
+                "type": "string",
+                "nullable": false,
+                "length": 3
+            },
+            {
+                "name": "cost_other_1",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "other_currency_1_code",
+                "type": "string",
+                "nullable": false,
+                "length": 3
+            },
+            {
+                "name": "description",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "daily_report",
+                "type": "relationship",
+                "target": "OperationDailyReport",
+                "back_populates": "other_costs",
+                "nullable": false
+            },
+            {
+                "name": "cost_type",
+                "type": "relationship",
+                "target": "CostType",
+                "back_populates": "other_costs",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "Currency",
+        "table": "currencies",
+        "attributes": [
+            {
+                "name": "code",
+                "type": "string",
+                "nullable": false,
+                "length": 3
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "symbol",
+                "type": "string",
+                "nullable": true,
+                "length": 10
+            },
+            {
+                "name": "is_base_currency",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "exchange_rate_to_base",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "deleted_at",
+                "type": "datetime",
+                "nullable": true
+            }
+        ]
+    },
+    {
+        "name": "MudBucket",
+        "table": "mud_buckets",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "mud_type",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "density",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "viscosity",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "water_content",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "oil_content",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "volume_current",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "volume_unit",
+                "type": "string",
+                "nullable": true,
+                "length": 20
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": true,
+                "length": 20
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "mud_buckets",
+                "nullable": false
+            },
+            {
+                "name": "transactions",
+                "type": "list",
+                "target": "MudTransaction",
+                "back_populates": "mud_bucket"
+            }
+        ]
+    },
+    {
+        "name": "MudTransaction",
+        "table": "mud_transactions",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "mud_bucket_id",
+                "type": "reference",
+                "target": "mud_buckets.id",
+                "nullable": false
+            },
+            {
+                "name": "transaction_type",
+                "type": "string",
+                "nullable": false,
+                "length": 20
+            },
+            {
+                "name": "quantity",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "unit",
+                "type": "string",
+                "nullable": false,
+                "length": 20
+            },
+            {
+                "name": "from_operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": true
+            },
+            {
+                "name": "to_operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": true
+            },
+            {
+                "name": "requested_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "executed_at",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "recorded_by_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "daily_report_id",
+                "type": "reference",
+                "target": "operation_daily_reports.id",
+                "nullable": true
+            },
+            {
+                "name": "notes",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "mud_bucket",
+                "type": "relationship",
+                "target": "MudBucket",
+                "back_populates": "transactions",
+                "nullable": false
+            },
+            {
+                "name": "daily_report",
+                "type": "relationship",
+                "target": "OperationDailyReport",
+                "back_populates": "mud_transactions",
+                "nullable": true
+            }
+        ]
+    },
+    {
+        "name": "BHAType",
+        "table": "bha_types",
+        "attributes": [
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "nullable": true,
+                "length": 255
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "configurations",
+                "type": "list",
+                "target": "BHAConfiguration",
+                "back_populates": "bha_type"
+            }
+        ]
+    },
+    {
+        "name": "BHAConfiguration",
+        "table": "bha_configurations",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "wellbore_id",
+                "type": "reference",
+                "target": "wellbores.id",
+                "nullable": false
+            },
+            {
+                "name": "bha_type_id",
+                "type": "reference",
+                "target": "bha_types.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "inserted_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "retrieved_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": true,
+                "length": 20
+            },
+            {
+                "name": "remarks",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "created_by_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "bha_configurations",
+                "nullable": false
+            },
+            {
+                "name": "wellbore",
+                "type": "relationship",
+                "target": "Wellbore",
+                "back_populates": "bha_configurations",
+                "nullable": false
+            },
+            {
+                "name": "bha_type",
+                "type": "relationship",
+                "target": "BHAType",
+                "back_populates": "configurations",
+                "nullable": false
+            },
+            {
+                "name": "items",
+                "type": "list",
+                "target": "BHAConfigurationItem",
+                "back_populates": "bha_configuration"
+            }
+        ]
+    },
+    {
+        "name": "BHAConfigurationItem",
+        "table": "bha_configuration_items",
+        "attributes": [
+            {
+                "name": "bha_configuration_id",
+                "type": "reference",
+                "target": "bha_configurations.id",
+                "nullable": false
+            },
+            {
+                "name": "sequence_order",
+                "type": "integer",
+                "nullable": false
+            },
+            {
+                "name": "tool_name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "tool_type",
+                "type": "string",
+                "nullable": true,
+                "length": 100
+            },
+            {
+                "name": "outer_diameter",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "length",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "notes",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "bha_configuration",
+                "type": "relationship",
+                "target": "BHAConfiguration",
+                "back_populates": "items",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "Casing",
+        "table": "casings",
+        "attributes": [
+            {
+                "name": "wellbore_id",
+                "type": "reference",
+                "target": "wellbores.id",
+                "nullable": false
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "nullable": false,
+                "length": 100
+            },
+            {
+                "name": "installed_at",
+                "type": "date",
+                "nullable": true
+            },
+            {
+                "name": "description",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "is_current",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "wellbore",
+                "type": "relationship",
+                "target": "Wellbore",
+                "back_populates": "casings",
+                "nullable": false
+            },
+            {
+                "name": "sections",
+                "type": "list",
+                "target": "CasingSection",
+                "back_populates": "casing"
+            }
+        ]
+    },
+    {
+        "name": "CasingSection",
+        "table": "casing_sections",
+        "attributes": [
+            {
+                "name": "casing_id",
+                "type": "reference",
+                "target": "casings.id",
+                "nullable": false
+            },
+            {
+                "name": "section_number",
+                "type": "integer",
+                "nullable": false
+            },
+            {
+                "name": "top_md",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "bottom_md",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "outer_diameter",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "weight_per_length",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "grade",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "coupling",
+                "type": "string",
+                "nullable": true,
+                "length": 50
+            },
+            {
+                "name": "notes",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "casing",
+                "type": "relationship",
+                "target": "Casing",
+                "back_populates": "sections",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "SiteVisit",
+        "table": "site_visits",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "visitor_type",
+                "type": "string",
+                "nullable": false,
+                "length": 20
+            },
+            {
+                "name": "visitor_name",
+                "type": "string",
+                "nullable": false,
+                "length": 255
+            },
+            {
+                "name": "company_id",
+                "type": "reference",
+                "target": "companies.id",
+                "nullable": true
+            },
+            {
+                "name": "headcount",
+                "type": "integer",
+                "nullable": true
+            },
+            {
+                "name": "check_in_at",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "check_out_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "purpose",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "recorded_by_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "site_visits",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "SupervisorAssignment",
+        "table": "supervisor_assignments",
+        "attributes": [
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": false
+            },
+            {
+                "name": "supervisor_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "superintendent_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": true
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "nullable": false,
+                "length": 20
+            },
+            {
+                "name": "assigned_at",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "removed_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "frozen_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "unfrozen_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "notes",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "supervisor_assignments",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "SuperintendentRegionAssignment",
+        "table": "superintendent_region_assignments",
+        "attributes": [
+            {
+                "name": "superintendent_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "region_id",
+                "type": "reference",
+                "target": "regions.id",
+                "nullable": false
+            },
+            {
+                "name": "operation_type_id",
+                "type": "reference",
+                "target": "operation_types.id",
+                "nullable": true
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "assigned_at",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "unassigned_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "region",
+                "type": "relationship",
+                "target": "Region",
+                "back_populates": "superintendent_assignments",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "RegionalManagerAssignment",
+        "table": "regional_manager_assignments",
+        "attributes": [
+            {
+                "name": "manager_employee_id",
+                "type": "reference",
+                "target": "employees.id",
+                "nullable": false
+            },
+            {
+                "name": "region_id",
+                "type": "reference",
+                "target": "regions.id",
+                "nullable": false
+            },
+            {
+                "name": "is_active",
+                "type": "boolean",
+                "nullable": false
+            },
+            {
+                "name": "assigned_at",
+                "type": "datetime",
+                "nullable": false
+            },
+            {
+                "name": "unassigned_at",
+                "type": "datetime",
+                "nullable": true
+            },
+            {
+                "name": "region",
+                "type": "relationship",
+                "target": "Region",
+                "back_populates": "regional_manager_assignments",
+                "nullable": false
+            }
+        ]
+    },
+    {
+        "name": "WellboreSurvey",
+        "table": "wellbore_surveys",
+        "attributes": [
+            {
+                "name": "wellbore_id",
+                "type": "reference",
+                "target": "wellbores.id",
+                "nullable": false
+            },
+            {
+                "name": "operation_id",
+                "type": "reference",
+                "target": "intervention_operations.id",
+                "nullable": true
+            },
+            {
+                "name": "survey_date",
+                "type": "date",
+                "nullable": false
+            },
+            {
+                "name": "measured_depth",
+                "type": "float",
+                "nullable": false
+            },
+            {
+                "name": "true_vertical_depth",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "inclination",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "azimuth",
+                "type": "float",
+                "nullable": true
+            },
+            {
+                "name": "tool",
+                "type": "string",
+                "nullable": true,
+                "length": 100
+            },
+            {
+                "name": "remarks",
+                "type": "text",
+                "nullable": true
+            },
+            {
+                "name": "wellbore",
+                "type": "relationship",
+                "target": "Wellbore",
+                "back_populates": "surveys",
+                "nullable": false
+            },
+            {
+                "name": "operation",
+                "type": "relationship",
+                "target": "InterventionOperation",
+                "back_populates": "wellbore_surveys",
+                "nullable": true
+            }
+        ]
+    }
 ]
